@@ -167,11 +167,7 @@ class UserController extends Controller
         $users->phone = $request->phone;
         $users->save();
 
-        if (auth()->user()->role !== 'administrator') {
-            return redirect('/profile');
-        } else {
-            return redirect('/admin');
-        }
+        return redirect('/profile');      
     }
 
     public function destroy(string $id)
