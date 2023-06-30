@@ -16,8 +16,9 @@ class PaymentController extends Controller
      */
     public function index(PaymentsDataTable $dataTable)
     {
-        $payments = payment::all();
-        return $dataTable->render('payments.index', compact('payments'));
+        // $payments = payment::all();
+        // return $dataTable->render('payments.index', compact('payments'));
+        return $dataTable->render('payments.index');
     }
 
     /**

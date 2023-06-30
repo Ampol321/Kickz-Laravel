@@ -17,7 +17,7 @@ class ShipmentController extends Controller
      */
     public function index(ShipmentsDataTable $dataTable)
     {
-        $shipments = shipment::all();
+        // $shipments = shipment::all();
         return $dataTable->render('shipments.index');
         // return View::make('shipments.index',compact('shipments'));
     }

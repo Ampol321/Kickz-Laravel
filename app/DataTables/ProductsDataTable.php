@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use Barryvdh\Debugbar\Facades\Debugbar;
 
 class ProductsDataTable extends DataTable
 {
@@ -23,7 +24,7 @@ class ProductsDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables()
-            ->query($query)
+            ->collection($query)
             ->addColumn('product_img', function ($row) {
                 $imageSrc = asset($row->product_img);
                 $image = '<img src="' . $imageSrc . '" width="100px" height="100px">';
@@ -37,7 +38,18 @@ class ProductsDataTable extends DataTable
                 <button type="submit" class="btn btn-danger">Delete</button>
                 </form>';
                 return $actionBtn;
-            })->rawColumns(['product_img', 'action']);
+            })
+            ->addColumn('brand_name', function ($row) {
+                return $row->brand->brand_name;
+            })
+            ->addColumn('type_name', function ($row) {
+                return $row->type->type_name;
+            })
+            ->addColumn('stocks', function ($row) {
+                return $row->stock ? $row->stock->stock : "0";
+            })
+            ->rawColumns(['product_img', 'action']);
+            
     }
 
     /**
@@ -45,11 +57,16 @@ class ProductsDataTable extends DataTable
      */
     public function query()
     {
-        $products = DB::table('products')
-            ->join('brands', 'brands.id', "=", 'products.brand_id')
-            ->join('types', 'types.id', "=", 'products.type_id')
-            ->join('stocks', 'stocks.product_id', "=", 'products.id')
-            ->select('products.*', 'brands.brand_name', 'types.type_name', 'stocks.stock');
+        // $products = DB::table('products')
+        //     ->join('brands', 'brands.id', "=", 'products.brand_id')
+        //     ->join('types', 'types.id', "=", 'products.type_id')
+        //     ->join('stocks', 'stocks.product_id', "=", 'products.id')
+        //     ->select('products.*', 'brands.brand_name', 'types.type_name', 'stocks.stock');
+
+        $products = Product::with(['brand', 'type', 'stock'])
+            ->get();
+
+        Debugbar::info($products);
 
         return $products;
     }
@@ -93,7 +110,7 @@ class ProductsDataTable extends DataTable
                 ->searchable(false),
             Column::make('type_name')
                 ->searchable(false),
-            Column::make('stock')
+            Column::make('stocks')
                 ->searchable(false),
             Column::computed('action')
                 ->exportable(false)

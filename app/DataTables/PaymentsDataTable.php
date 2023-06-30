@@ -43,7 +43,7 @@ class PaymentsDataTable extends DataTable
      * Get the query source of dataTable.
      */
     public function query(Payment $model): QueryBuilder
-    {
+    {   
         return $model->newQuery();
     }
 

@@ -8,10 +8,10 @@
             </div>
         @endif
 
-        @if ($products->count())
+        @if ($searchResults->count())
             @extends('layouts.productcard')
             <center>
-                @foreach ($products as $product)
+                @foreach ($searchResults as $product)
                     <div class="card p-0" style="display:inline-block; height:600px; width: 480px">
                         <div class="card-image">
                             <img src="{{ url($product->product_img) }}" alt="">

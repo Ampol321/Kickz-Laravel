@@ -12,4 +12,5 @@ class Shipment extends Model
     protected $guarded = 'id';
     protected $fillable = ['shipment_img','shipment_name','shipment_cost'];
     public $timestamps = false;
+
 }
