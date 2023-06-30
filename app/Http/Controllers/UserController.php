@@ -166,8 +166,8 @@ class UserController extends Controller
         $users->email = $request->email;
         $users->phone = $request->phone;
         $users->save();
-
-        return redirect('/profile');
+        
+        return redirect('/profile');      
     }
 
     public function destroy(string $id)
