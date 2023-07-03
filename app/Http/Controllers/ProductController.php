@@ -117,7 +117,14 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $products = DB::table('products')
+            ->join('brands', 'brands.id', "=", 'products.brand_id')
+            ->join('types', 'types.id', "=", 'products.type_id')
+            ->select('products.*', 'brands.brand_name', 'types.type_name')
+            ->where('products.id', $id)
+            ->first();
+
+        return View::make('products.detail',compact('products'));
     }
 
     /**

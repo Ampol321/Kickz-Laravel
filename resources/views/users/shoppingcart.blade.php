@@ -166,7 +166,7 @@
                 document.getElementById("otherOption").style.display = "none";
                 document.getElementById("otherInput").required = false;
                 document.getElementById("otherInput").name = null;
-                document.getElementById("otherInput").value = "";
+                document.getElementById("otherInput").value = "x";
             }
         });
     </script>

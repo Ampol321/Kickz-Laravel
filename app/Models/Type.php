@@ -22,11 +22,10 @@ class Type extends Model implements Searchable
 
     public function getSearchResult(): SearchResult
     {
-        $url = '#';
+        // $url = route('type.show', $this->id);
         return new SearchResult(
             $this,
             $this->type_name,
-            $url,
         );
     }
 }

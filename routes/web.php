@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Mail;
 
 Route::get('/', [ProductController::class, 'home'])->name('products.index');
 Route::get('/search', [SearchController::class, 'search'])->name('search');
+Route::get('/product-detail/{id}', [ProductController::class, 'show'])->name('products.detail');
 
 Route::middleware(['admin','auth'])->group(function () { 
     Route::resource('/brand', BrandController::class);

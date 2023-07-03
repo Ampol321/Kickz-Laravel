@@ -1,6 +1,20 @@
 @extends('layouts.app')
 @section('content')
-    <div class="card-body">
+    <h1>Search</h1>
+
+    There are {{ $searchResults->count() }} results.
+
+    @foreach ($searchResults->groupByType() as $type => $modelSearchResults)
+        <h2>{{ $type }}</h2>
+
+        @foreach ($modelSearchResults as $searchResult)
+            <ul>
+                <a href="{{ $searchResult->url }}">{{ $searchResult->title }}</a>
+            </ul>
+        @endforeach
+    @endforeach
+
+    {{-- <div class="card-body">
         @if (session()->has('message'))
             <div class="alert alert-success">
                 <button type="button" class="close" data-dismiss="alert" style="display:inline-block">x</button>
@@ -8,10 +22,10 @@
             </div>
         @endif
 
-        @if ($searchResults->count())
+        @if ($products->count())
             @extends('layouts.productcard')
             <center>
-                @foreach ($searchResults as $product)
+                @foreach ($products as $product)
                     <div class="card p-0" style="display:inline-block; height:600px; width: 480px">
                         <div class="card-image">
                             <img src="{{ url($product->product_img) }}" alt="">
@@ -36,5 +50,5 @@
         @else
             <h1 style="text-align: center;  padding:20%;">No Results Found</h1>
         @endif
-    </div>
+    </div> --}}
 @endsection

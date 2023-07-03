@@ -18,7 +18,7 @@ class Product extends Model implements Searchable
     use HasFactory;
     
     protected $table = 'products';
-    protected $primaryKey = 'product_id';
+    protected $primaryKey = 'id';
     protected $fillable = ['product_img','product_name','colorway',
                             'size','price','brand_id','type_id'];
 
@@ -36,7 +36,7 @@ class Product extends Model implements Searchable
 
     public function getSearchResult(): SearchResult
     {
-        $url = '#';
+        $url = url('/product-detail', $this->id);
         return new SearchResult(
             $this,
             $this->product_img,

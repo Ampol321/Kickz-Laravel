@@ -30,7 +30,7 @@ class SearchController extends Controller
             ->registerModel(Brand::class, 'brand_name')
             ->registerModel(Type::class, 'type_name')
             ->search(trim($request->term));
-        dd($searchResults);
+        // dd($searchResults);
 
         return view('products.search', compact('searchResults'));
     }

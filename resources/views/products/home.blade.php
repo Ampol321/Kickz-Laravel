@@ -48,7 +48,11 @@
                             <form action="{{ url('addcart', $product->id) }}" method="POST">
                                 @csrf
                                 <input type="hidden" value="1" name="quantity">
-                                <input class="btn btn-dark" type="submit" value="Add to Cart"></br>
+                                {{-- <input class="btn btn-dark" type="submit" value="Add to Cart"></br> --}}
+                                <div class="d-flex pt-1">
+                                    <a href="{{ url('/product-detail', $product->id) }}" class="btn btn-success" style="margin-right:5px"> Details </a>
+                                    <input class="btn btn-dark" type="submit" value="Add to Cart">
+                                </div>
                             </form>
                         </div>
                     </div>

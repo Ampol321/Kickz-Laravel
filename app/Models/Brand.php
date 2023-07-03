@@ -22,7 +22,7 @@ class Brand extends Model implements Searchable
 
     public function getSearchResult(): SearchResult
     {
-        $url = '#';
+        $url = route('brand.show', $this->id);
         return new SearchResult(
             $this,
             $this->brand_name,
