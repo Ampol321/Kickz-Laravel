@@ -5,19 +5,87 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\DB;
 use App\DataTables\BrandsDataTable;
+use App\Charts\BrandChart;
 use Illuminate\Http\Request;
 use App\Models\Brand;
 
 class BrandController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(BrandsDataTable $dataTable)
     {
-        $brands = brand::all();
-        return $dataTable->render('brands.index');
+        $brands = DB::table('products')
+            ->join('brands', 'brands.id', "=", 'products.brand_id')
+            ->groupBy('products.brand_id', 'brands.brand_name')
+            ->pluck(DB::raw('count(products.brand_id) as total'), 'brands.brand_name')
+            ->all();
+        // dd($shipments);
+
+        $brandChart = new BrandChart();
+        $dataset = $brandChart->labels(array_keys($brands));
+        $dataset = $brandChart->dataset(
+            'Times used',
+            'doughnut',
+            array_values($brands)
+        );
+
+        $dataset = $dataset->backgroundColor([
+            '#000000',
+            '#CF8D2E',
+            '#F8121A',
+            "#FF851B",
+            "#7FDBFF",
+            "#B10DC9",
+            "#FFDC00",
+            "#001f3f",
+            "#39CCCC",
+            "#01FF70",
+            "#85144b",
+            "#F012BE",
+            "#3D9970",
+            "#111111",
+            "#AAAAAA",
+        ]);
+
+        $brandChart->title("Shoe Count Based on Brand", 20, '#666', true,
+         "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif");
+
+        $brandChart->options([
+            'responsive' => true,
+            'legend' => ['display' => false],
+            'tooltips' => ['enabled' => true],
+            // 'maintainAspectRatio' =>true,
+
+            // 'title' => ["Best Seller Shoe Products" => true],
+            'aspectRatio' => 1,
+            'scales' => [
+                'yAxes' => [
+                    [
+                        'display' => false,
+                        'ticks' => ['beginAtZero' => true],
+                        'gridLines' => ['display' => false],
+                    ],
+                ],
+                'xAxes' => [
+                    [
+                        'categoryPercentage' => 0.8,
+                        //'barThickness' => 100,
+                        'barPercentage' => 1,
+                        'ticks' => ['beginAtZero' => false],
+                        'gridLines' => ['display' => false],
+                        'display' => false,
+                    ],
+                ],
+            ],
+            "plugins" => '{datalabels: { font: { weight: \'bold\',
+                size: 36 },
+                color: \'white\',
+            }}',
+        ]);
+
+        return $dataTable->render('brands.index', compact('brandChart'));
         // return View::make('brands.index',compact('brands'));
     }
 

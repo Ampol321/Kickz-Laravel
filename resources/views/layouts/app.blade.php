@@ -30,7 +30,6 @@
 
 
     <!-- Scripts -->
-
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -90,7 +89,7 @@
                         <form class="form-inline my-2 my-lg-0" action="{{ route('search') }}" method="GET">
                             <div class="form-group has-search">
                                 <span class="fa fa-search form-control-feedback"></span>
-                                <input class="form-control" type="search" placeholder="Search..." name="result"
+                                <input class="form-control" type="search" placeholder="Search..." name="term"
                                     style="margin-right:10px">
                             </div>
                         </form>

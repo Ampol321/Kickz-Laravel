@@ -5,6 +5,15 @@
         <h1><b>Kickz Sales</b></h1>
     </center></br>
 
+    <div class="container" style="width: 1000px;">
+        @if (empty($salesChart))
+            <div></div>
+        @else
+            <div>{!! $salesChart->container() !!}</div>
+            {!! $salesChart->script() !!}
+        @endif
+    </div></br>
+
     <div class="d-flex justify-content-center">
         <form action="{{ url('/date-range') }}" method="GET">
             <div class="row">

@@ -39,13 +39,7 @@ class Product extends Model implements Searchable
         $url = url('/product-detail', $this->id);
         return new SearchResult(
             $this,
-            $this->product_img,
             $this->product_name,
-            $this->colorway,
-            $this->size,
-            $this->price,
-            // $this,
-            // $this->title,
             $url,
         );
     }

@@ -14,7 +14,16 @@
                 Stored Images</button>
             <a href="{{ url('/product/create') }}" class="btn btn-success btn-sm"> Add Product </a>
         </center></br>
-        <div class="container" style="width: 1000px; border:2px solid #cecece;">
+        <div class="container" style="width: 1000px;">
+            @if (empty($productChart))
+                <div></div>
+            @else
+                <div>{!! $productChart->container() !!}</div>
+                {!! $productChart->script() !!}
+            @endif
+        </div></br>
+
+        <div class="container" style="width: 1000px; padding:5px; border:2px solid #cecece;">
             {{ $dataTable->table() }}
             {{ $dataTable->scripts() }}
         </div>

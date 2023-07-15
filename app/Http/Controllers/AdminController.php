@@ -7,6 +7,7 @@ use PHPMailer\PHPMailer\Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Charts\SalesChart;
 use App\Models\Shipment;
 use App\Models\Payment;
 use App\Models\Orderitem;
@@ -33,7 +34,7 @@ class AdminController extends Controller
 
         $mail->setFrom('kickz6873@gmail.com', 'Kickz');
         $mail->addAddress($email, $name);
-        $mail->Subject = 'Hello '.$name;
+        $mail->Subject = 'Hello ' . $name;
         $mail->isHTML(true);
         $mail->Body = '<div style="background-color: #F7F7F7; padding: 20px;">
         <h1 style="font-size: 36px; color: #0C2340; margin: 0; text-align: center;">Thank you for your purchase!</h1>
@@ -81,11 +82,82 @@ class AdminController extends Controller
             ->select('orders.id', DB::raw('SUM(orderitems.price)  as totalprice'))
             ->groupBy('orders.id')->get();
 
+        $chartsales = DB::table('orders')
+            ->join('orderitems', 'orderitems.order_id', '=', 'orders.id')
+            ->orderBy(DB::raw('month(orders.date_shipped)'), 'ASC')
+            ->groupBy('month')
+            ->pluck(DB::raw('sum(orderitems.price) as total'),
+                    DB::raw('monthname(orders.date_shipped) as month'))
+            ->all();
+        // dd($chartsales);
+        
+            $salesChart = new SalesChart();
+            $dataset = $salesChart->labels(array_keys($chartsales));
+            $dataset = $salesChart->dataset(
+                'Sales',
+                'line',
+                array_values($chartsales)
+            );
+    
+            $dataset = $dataset->backgroundColor([
+                '#4F7942',
+                '#1260CC',
+                '#29C5F6',
+                "#FF851B",
+                "#7FDBFF",
+                "#B10DC9",
+                "#FFDC00",
+                "#001f3f",
+                "#39CCCC",
+                "#01FF70",
+                "#85144b",
+                "#F012BE",
+                "#3D9970",
+                "#111111",
+                "#AAAAAA",
+            ]);
+    
+            $salesChart->title("", 40, '#212121', true,
+             "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif");
+    
+            $salesChart->options([
+                'responsive' => true,
+                'legend' => ['display' => false],
+                'tooltips' => ['enabled' => true],
+                // 'maintainAspectRatio' =>true,
+    
+                // 'title' => ["Best Seller Shoe Products" => true],
+                'aspectRatio' => 1,
+                'scales' => [
+                    'yAxes' => [
+                        [
+                            'display' => false,
+                            'ticks' => ['beginAtZero' => true],
+                            'gridLines' => ['display' => true],
+                        ],
+                    ],
+                    'xAxes' => [
+                        [
+                            'categoryPercentage' => 0.8,
+                            // 'barThickness' => 100,
+                            'barPercentage' => 1,
+                            'ticks' => ['beginAtZero' => true],
+                            'gridLines' => ['display' => true],
+                            'display' => true,
+                        ],
+                    ],
+                ],
+                "plugins" => '{datalabels: { font: { weight: \'bold\',
+                    size: 36 },
+                    color: \'white\',
+                }}',
+            ]);
+
         // $shipcosts = DB::table('orders')
         // ->join('shipments', 'shipements.id', '=', 'orders.shipment_id')
         // ->sum('shipments.shipment_cost')->get();
 
-        return View('admin.sales', compact('orders', 'sales'));
+        return View('admin.sales', compact('orders', 'sales','salesChart'));
     }
 
     public function daterange(Request $request)

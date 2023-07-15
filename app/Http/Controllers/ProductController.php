@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 use App\DataTables\ProductsDataTable;
+use App\Charts\ProductChart;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Brand;
@@ -15,9 +16,79 @@ use App\Models\Type;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function index(ProductsDataTable $dataTable)
+    {
+        $products = DB::table('orderitems')
+            ->orderBy('totalqty', 'DESC')
+            ->join('products', 'products.id', "=", 'orderitems.product_id')
+            ->groupBy('products.product_name')
+            ->pluck(DB::raw('sum(orderitems.quantity) as totalqty'), 'products.product_name')
+            ->all();
+
+        $productChart = new ProductChart();
+        $dataset = $productChart->labels(array_keys($products));
+        $dataset = $productChart->dataset(
+            'Sold Products',
+            'horizontalBar',
+            array_values($products)
+        );
+
+        $dataset = $dataset->backgroundColor([
+            '#7158e2',
+            '#3ae374',
+            '#ff3838',
+            "#FF851B",
+            "#7FDBFF",
+            "#B10DC9",
+            "#FFDC00",
+            "#001f3f",
+            "#39CCCC",
+            "#01FF70",
+            "#85144b",
+            "#F012BE",
+            "#3D9970",
+            "#111111",
+            "#AAAAAA",
+        ]);
+
+        $productChart->title("Best Seller Shoe Products", 20, '#666', true,
+         "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif");
+
+        $productChart->options([
+            'responsive' => true,
+            'legend' => ['display' => false],
+            'tooltips' => ['enabled' => true],
+            // 'maintainAspectRatio' =>true,
+
+            'title' => ["Best Seller Shoe Products" => true],
+            'aspectRatio' => 1,
+            'scales' => [
+                'yAxes' => [
+                    [
+                        'display' => true,
+                        'ticks' => ['beginAtZero' => true],
+                        'gridLines' => ['display' => false],
+                    ],
+                ],
+                'xAxes' => [
+                    [
+                        'categoryPercentage' => 0.8,
+                        //'barThickness' => 100,
+                        'barPercentage' => 1,
+                        'ticks' => ['beginAtZero' => false],
+                        'gridLines' => ['display' => false],
+                        'display' => false,
+                    ],
+                ],
+            ],
+            "plugins" => '{datalabels: { font: { weight: \'bold\',
+                size: 36 },
+                color: \'white\',
+            }}',
+        ]);
+        return $dataTable->render('products.index', compact('productChart'));
+    }
+
     public function home()
     {
         $products = DB::table('products')
@@ -28,11 +99,6 @@ class ProductController extends Controller
             ->orderBy('products.id', 'ASC')->paginate(6);
 
         return View::make('products.home', compact('products'));
-    }
-
-    public function index(ProductsDataTable $dataTable)
-    {
-        return $dataTable->render('products.index');
     }
 
     /**
@@ -124,7 +190,7 @@ class ProductController extends Controller
             ->where('products.id', $id)
             ->first();
 
-        return View::make('products.detail',compact('products'));
+        return View::make('products.detail', compact('products'));
     }
 
     /**
@@ -143,7 +209,7 @@ class ProductController extends Controller
         // $products = Product::with(['brand', 'type'])->findOrFail($id);
         $brands = Brand::where('id', '<>', $products->brand_id)->get(['brand_name', 'id']);
         $types = Type::where('id', '<>', $products->type_id)->get(['type_name', 'id']);
-        $stocks = stock::where('product_id',$id)->first();
+        $stocks = stock::where('product_id', $id)->first();
         // $products = product::find($id);
         return View('products.edit', compact('products', 'brands', 'types', 'stocks'))->with('message', 'Products Edited');
     }

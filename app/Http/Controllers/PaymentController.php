@@ -5,20 +5,87 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\DB;
 use App\DataTables\PaymentsDataTable;
+use App\Charts\PaymentChart;
 use Illuminate\Http\Request;
 use App\Models\Payment;
 
 class PaymentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(PaymentsDataTable $dataTable)
     {
+        $payments = DB::table('orders')
+            ->join('payments', 'payments.id', "=", 'orders.payment_id')
+            ->groupBy('orders.payment_id', 'payments.payment_name')
+            ->pluck(DB::raw('count(orders.payment_id) as total'), 'payments.payment_name')
+            ->all();
+
+        $paymentChart = new PaymentChart();
+        $dataset = $paymentChart->labels(array_keys($payments));
+        $dataset = $paymentChart->dataset(
+            'Times used',
+            'bar',
+            array_values($payments)
+        );
+
+        $dataset = $dataset->backgroundColor([
+            '#4F7942',
+            '#1260CC',
+            '#29C5F6',
+            "#FF851B",
+            "#7FDBFF",
+            "#B10DC9",
+            "#FFDC00",
+            "#001f3f",
+            "#39CCCC",
+            "#01FF70",
+            "#85144b",
+            "#F012BE",
+            "#3D9970",
+            "#111111",
+            "#AAAAAA",
+        ]);
+
+        $paymentChart->title("Most Used Payment Options", 20, '#666', true,
+         "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif");
+
+        $paymentChart->options([
+            'responsive' => true,
+            'legend' => ['display' => false],
+            'tooltips' => ['enabled' => true],
+            // 'maintainAspectRatio' =>true,
+
+            // 'title' => ["Best Seller Shoe Products" => true],
+            'aspectRatio' => 1,
+            'scales' => [
+                'yAxes' => [
+                    [
+                        'display' => false,
+                        'ticks' => ['beginAtZero' => true],
+                        'gridLines' => ['display' => false],
+                    ],
+                ],
+                'xAxes' => [
+                    [
+                        'categoryPercentage' => 0.8,
+                        //'barThickness' => 100,
+                        'barPercentage' => 1,
+                        'ticks' => ['beginAtZero' => false],
+                        'gridLines' => ['display' => false],
+                        'display' => true,
+                    ],
+                ],
+            ],
+            "plugins" => '{datalabels: { font: { weight: \'bold\',
+                size: 36 },
+                color: \'white\',
+            }}',
+        ]);
+
         // $payments = payment::all();
         // return $dataTable->render('payments.index', compact('payments'));
-        return $dataTable->render('payments.index');
+        return $dataTable->render('payments.index',compact('paymentChart'));
     }
 
     /**

@@ -14,10 +14,24 @@
                 Stored Images</button>
             <a href="{{ url('/brand/create') }}" class="btn btn-success btn-sm"> Add Brand </a>
         </center></br>
-        <div class="container" style="width: 700px; border:2px solid #cecece;">
-            {{ $dataTable->table() }}
-            {{ $dataTable->scripts() }}
-            {{-- <div class="table-responsive">
+
+        <div class="container">
+            <div class="main-body">
+                <div class="row gutters-sm">
+                    <div class="col-md-4 mb-3">
+                        @if (empty($brandChart))
+                            <div></div>
+                        @else
+                            <div style="padding:50px">
+                                {!! $brandChart->container() !!}
+                                {!! $brandChart->script() !!}
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-md-8" style="padding:5px; border:2px solid #cecece;">
+                        {{ $dataTable->table() }}
+                        {{ $dataTable->scripts() }}
+                        {{-- <div class="table-responsive">
                 <table class="table">
                     <tr>
                         <td><b>Image:</b></td>
@@ -40,6 +54,9 @@
                 @endforeach
                 </table>
             </div> --}}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
