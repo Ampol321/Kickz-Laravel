@@ -1,18 +1,22 @@
 @extends('layouts.app')
 @section('content')
-    <h1>Search</h1>
-
-    There are {{ $searchResults->count() }} results.
-
-    @foreach ($searchResults->groupByType() as $type => $modelSearchResults)
-        <h2>{{ $type }}</h2>
-
-        @foreach ($modelSearchResults as $searchResult)
-            <ul>
-                <a href="{{ $searchResult->url }}">{{ $searchResult->title }}</a>
-            </ul>
-        @endforeach
-    @endforeach
+    <div class="card-body">
+        <div class="container">
+            <div class="text-center">
+                <h1>Search</h1>
+                There are {{ $searchResults->count() }} results.
+            </div>
+            @foreach ($searchResults as $searchResult)
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4 class="mb-1"><a href="{{ $searchResult->url }}">{{ $searchResult->title }}</a></h4>
+                        <div class="font-13 text-success mb-3">{{ $searchResult->url }}</div>
+                    </div>
+                </div>
+                <hr>
+            @endforeach
+        </div>
+    </div>
 
     {{-- <div class="card-body">
         @if (session()->has('message'))

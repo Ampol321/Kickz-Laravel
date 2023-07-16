@@ -20,15 +20,15 @@ class SearchController extends Controller
         //     ->join('types', 'types.id', "=", 'products.type_id')
         //     ->select('products.*', 'brands.brand_name', 'types.type_name')
         //     ->where('products.product_name', 'like', '%' . $result  . '%')
-        //     ->orWhere('brands.brand_name', 'like', '%' . $result  . '%')
-        //     ->orWhere('products.colorway', 'like', '%' . $result  . '%')
-        //     ->orWhere('products.size', 'like', '%' . $result  . '%')
-        //     ->get();
+            // ->orWhere('brands.brand_name', 'like', '%' . $result  . '%')
+            // ->orWhere('products.colorway', 'like', '%' . $result  . '%')
+            // ->orWhere('products.size', 'like', '%' . $result  . '%')
+            // ->get();
 
         $searchResults = (new Search())
-            ->registerModel(Product::class, ['product_name', 'colorway', 'size', 'price'])
-            ->registerModel(Brand::class, 'brand_name')
-            ->registerModel(Type::class, 'type_name')
+            ->registerModel(Product::class, 'product_name')
+            // ->registerModel(Brand::class, 'brand_name')
+            // ->registerModel(Type::class, 'type_name')
             ->search(trim($request->term));
         // dd($searchResults);
 

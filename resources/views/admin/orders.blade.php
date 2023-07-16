@@ -10,7 +10,7 @@
     <center>
         <h1><b>Update Orders</b></h1>
     </center></br>
-    <div class="container" style="width: 1000px; border:2px solid #cecece;">
+    <div class="container" style="width: 1000px; padding:10px; border:2px solid #cecece;">
         {{ $dataTable->table() }}
         {{ $dataTable->scripts() }}
     </div>

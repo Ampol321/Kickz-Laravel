@@ -117,7 +117,7 @@ class AdminController extends Controller
                 "#AAAAAA",
             ]);
     
-            $salesChart->title("", 40, '#212121', true,
+            $salesChart->title("", 40, 'rgba(102, 102, 102, 0.2)', true,
              "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif");
     
             $salesChart->options([
