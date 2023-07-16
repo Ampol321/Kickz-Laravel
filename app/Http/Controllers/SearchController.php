@@ -27,8 +27,6 @@ class SearchController extends Controller
 
         $searchResults = (new Search())
             ->registerModel(Product::class, 'product_name')
-            // ->registerModel(Brand::class, 'brand_name')
-            // ->registerModel(Type::class, 'type_name')
             ->search(trim($request->term));
         // dd($searchResults);
 
