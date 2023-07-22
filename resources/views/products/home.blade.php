@@ -50,7 +50,8 @@
                                 <input type="hidden" value="1" name="quantity">
                                 {{-- <input class="btn btn-dark" type="submit" value="Add to Cart"></br> --}}
                                 <div class="d-flex pt-1">
-                                    <a href="{{ url('/product-detail', $product->id) }}" class="btn btn-success" style="margin-right:5px"> Details </a>
+                                    <a href="{{ url('/product-detail', $product->id) }}" class="btn btn-success"
+                                        style="margin-right:5px"> Details </a>
                                     <input class="btn btn-dark" type="submit" value="Add to Cart">
                                 </div>
                             </form>
@@ -62,4 +63,12 @@
             <div class="d-flex justify-content-center" style="margin-top:20px">
                 {{ $products->links() }}
             </div>
+
+            <script>
+                $(function() {
+                    $(".card").hide().each(function(index) {
+                        $(this).delay(200 * index).fadeIn(1000);
+                    });
+                });
+            </script>
         @endsection

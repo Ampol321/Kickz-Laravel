@@ -12,6 +12,7 @@
     <link rel="icon" href="http://127.0.0.1:8000/storage/images/kickz.png" type="image/x-icon">
 
     <!-- Fonts -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
@@ -86,10 +87,17 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
-                        <form class="form-inline my-2 my-lg-0" action="{{ route('search') }}" method="GET">
+                        {{-- <form class="form-inline my-2 my-lg-0" action="{{ url('/api/search') }}" method="GET" id="search-form">
                             <div class="form-group has-search">
                                 <span class="fa fa-search form-control-feedback"></span>
-                                <input class="form-control" type="search" placeholder="Search..." name="term"
+                                <input class="form-control" type="search" id="search-text" placeholder="Search..." name="term"
+                                    style="margin-right:10px">
+                            </div>
+                        </form> --}}
+                        <form class="form-inline my-2 my-lg-0" id="search-form">
+                            <div class="form-group has-search">
+                                <span class="fa fa-search form-control-feedback"></span>
+                                <input class="form-control" type="search" id="search-text" placeholder="Search..."
                                     style="margin-right:10px">
                             </div>
                         </form>
@@ -119,8 +127,8 @@
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="{{ url('/shipment') }}">Shipments</a>
                                         <a class="dropdown-item" href="{{ url('/product') }}">Products</a>
+                                        <a class="dropdown-item" href="{{ url('/shipment') }}">Shipments</a>
                                         <a class="dropdown-item" href="{{ url('/payment') }}">Payments</a>
                                         <a class="dropdown-item" href="{{ url('/brand') }}">Brands</a>
                                     </div>
@@ -128,7 +136,6 @@
                             @endif
 
                             <li class="nav-item dropdown">
-
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     @if (empty(Auth::user()->user_img))
@@ -166,10 +173,57 @@
                 </div>
             </div>
         </nav>
+        <div class="container">
+            <div class="card-body" id="search-results">
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function() {
+                $('#search-text').on('input', function() {
+                    var searchTerm = $(this).val();
+                    if (searchTerm.trim() === '') {
+                        $('#search-results').empty();
+                    } else {
+                        $.ajax({
+                            url: '/api/search',
+                            type: 'GET',
+                            data: {
+                                term: searchTerm
+                            },
+                            success: function(data) {
+                                displaySearchResults(data);
+                            },
+                            error: function(error) {
+                                console.error('Error:', error);
+                            }
+                        });
+                    }
+                });
+
+                function displaySearchResults(data) {
+                    $('#search-results').empty();
+                    $('#search-results').append('<div class="text-center" style="margin-top:100px"><h1>Search</h1>There are ' + data
+                        .searchResults.length + ' results.</div>');
+                    data.searchResults.forEach(function(searchResult) {
+                        var resultHtml =
+                            '<div class="row">' +
+                            '<div class="col-md-12">' +
+                            '<h4 class="mb-1"><a href="' + searchResult.url + '">' + searchResult.title +
+                            '</a></h4>' +
+                            '<div class="font-13 text-success mb-3">' + searchResult.url + '</div>' +
+                            '</div>' +
+                            '</div><hr>';
+                        $('#search-results').append(resultHtml);
+                    });
+                }
+            });
+        </script>
         <main class="py-4"><br><br>
             @yield('content')
         </main>
     </div>
     @include('layouts.scripts')
 </body>
+
 </html>

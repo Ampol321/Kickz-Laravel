@@ -30,6 +30,7 @@ class SearchController extends Controller
             ->search(trim($request->term));
         // dd($searchResults);
 
-        return view('products.search', compact('searchResults'));
+        // return view('products.search', compact('searchResults'));
+        return response()->json(['searchResults' => $searchResults]);
     }
 }

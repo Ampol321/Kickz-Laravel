@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="card-body">
+    {{-- <div class="card-body" id="search-results">
         <div class="container">
             <div class="text-center">
                 <h1>Search</h1>
@@ -12,10 +12,11 @@
                         <h4 class="mb-1"><a href="{{ $searchResult->url }}">{{ $searchResult->title }}</a></h4>
                         <div class="font-13 text-success mb-3">{{ $searchResult->url }}</div>
                     </div>
-                </div><hr>
+                </div>
+                <hr>
             @endforeach
         </div>
-    </div>
+    </div> --}}
 
     {{-- <div class="card-body">
         @if (session()->has('message'))
