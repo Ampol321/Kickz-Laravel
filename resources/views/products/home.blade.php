@@ -67,7 +67,7 @@
             <script>
                 $(function() {
                     $(".card").hide().each(function(index) {
-                        $(this).delay(200 * index).fadeIn(1000);
+                        $(this).delay(200 * index).fadeIn(2000);
                     });
                 });
             </script>

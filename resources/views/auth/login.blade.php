@@ -1,16 +1,16 @@
 @extends('layouts.app')
 @section('content')
-    <br><div class="container">
+    <br><div class="container" style="display: none;" id="loginContainer">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col col-xl-10">
                 <div class="card" style="border-radius: 1rem;">
                     <div class="row g-0">
-                        <div class="col-md-6 col-lg-5 d-none d-md-block">
+                        <div class="col-md-6 col-lg-5 d-none d-md-block" >
                             <img src="http://127.0.0.1:8000/storage/images/Login.png" alt="login form" class="img-fluid"
                                 style="border-radius: 1rem 0 0 1rem;" />
                         </div>
                         <div class="col-md-6 col-lg-7 d-flex align-items-center">
-                            <div class="card-body p-4 p-lg-5 text-black">
+                            <div class="card-body p-4 p-lg-5 text-black" >
 
                                 <form method="POST" action="{{ route('login') }}">
                                     @csrf
@@ -150,4 +150,12 @@
             </div>
         </div>
     </div> --}}
+    <script>
+        $(document).ready(function () {
+            $("#loginContainer").fadeIn(1000);
+            $("#loginCard").fadeIn(1000);
+            $("#loginImage").fadeIn(1000);
+            $("#loginForm").fadeIn(1000);
+        });
+    </script>
 @endsection

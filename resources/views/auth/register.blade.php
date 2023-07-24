@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <br><br><div class="container py-5 h-100">
+    <br><br><div class="container" style="display: none;" id="registerContainer">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col col-xl-10">
                 <div class="card text-black" style="border-radius: 1rem;">
@@ -201,4 +201,9 @@
             </div>
         </div>
     </div> --}}
+    <script>
+        $(document).ready(function () {
+            $("#registerContainer").fadeIn(1000);
+        });
+    </script>
 @endsection
