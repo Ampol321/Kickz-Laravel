@@ -19,7 +19,7 @@ let dataTable = $('#productsTable').DataTable({
         data: null,
         render: function (data) {
             return `<img src="${data.product_img}" width="100" height="100" />`;
-          }
+        }
     },
 
     {
@@ -53,7 +53,7 @@ let dataTable = $('#productsTable').DataTable({
     {
         data: null,
         render: function (data) {
-            return `<button type="button" data-bs-toggle="modal" data-bs-target="#itemModal" data-id="${data.id}" class="btn btn-primary edit">
+            return `<button type="button" data-bs-toggle="modal" data-bs-target="#productModal" data-id="${data.id}" class="btn btn-primary edit">
                     <i class="fas fa-edit"></i>
                 </button>
                 <button type="button" data-id="${data.id}" class="btn btn-danger btn-delete delete">
@@ -62,4 +62,216 @@ let dataTable = $('#productsTable').DataTable({
         }
     }
     ]
+});
+
+function clearSelect() {
+    $('#brandSelect option:not(#brandOption)').remove()
+    $('#typeSelect option:not(#typeOption)').remove()
+}
+
+$('#create').on('click', function () {
+    $('#stock').hide();
+    $('#stockLabel').hide();
+    $('#update').hide();
+    $('#save').show();
+    clearSelect()
+    $.ajax({
+        url: "/api/product/create",
+        type: "GET",
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (data) {
+            $.each(data.brands, function (key, value) {
+                $('#brandSelect').append($('<option>').attr("value", value.id).html(value.brand_name))
+
+            })
+            $.each(data.types, function (key, value) {
+                $('#typeSelect').append($('<option>').attr("value", value.id).html(value.type_name))
+            })
+            $('#productForm').trigger('reset')
+
+            
+        },
+        error: function (error) {
+            alert("error");
+        },
+    })
+})
+
+$('#save').on('click', function () {
+    let formData = new FormData($('#productForm')[0]);
+    // for (var pair of formData.entries()) {
+    //     console.log(pair[0] + ', ' + pair[1]);
+    // }
+    $('#productModal *').prop('disabled', true);
+    $.ajax({
+        url: "/api/product/store",
+        type: "POST",
+        dataType: "json",
+        data: formData,
+        contentType: false,
+        processData: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (data) {
+            $('#productModal *').prop('disabled', false);
+            $('#productForm').trigger('reset')
+            $('#productModal').modal('hide')
+
+            $('.for-alert').prepend(`
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Successfully Created!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>`);
+
+            $('.alert').fadeOut(5000, function () {
+                $(this).remove();
+            });
+        },
+        error: function (error) {
+            alert("error");
+        },
+    })
+})
+
+$(document).on('click', 'button.edit', function () {
+    $('#save').hide();
+    $('#update').show();
+    $('#stock').show();
+    $('#stockLabel').show();
+    $('input[name="document[]"]').remove();
+
+    let id = $(this).attr('data-id');
+    $('#update').attr('data-id',id);
+    $.ajax({
+        url: `/api/product/edit/${id}`,
+        type: "GET",
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (data) {
+            let brand = $('#brandSelect');
+            let type = $('#typeSelect');
+
+            clearSelect()
+
+            $('#product_name').val(data.product.product_name);
+            brand.append($('<option>').attr({ 'selected': true }).val(data.product.brand_id).html(data.product.brand_name));
+            $('#colorway').val(data.product.colorway);
+            type.append($('<option>').attr({ 'selected': true }).val(data.product.type_id).html(data.product.type_name));
+            $('#size').val(data.product.size);
+            $('#price').val(data.product.price);
+            $('#stock').val(data.stocks.stock);
+
+            $.each(data.brands, function (key, value) {
+                brand.append($('<option>').val(value.id).html(value.brand_name))
+            })
+
+            $.each(data.types, function (key, value) {
+                type.append($('<option>').val(value.id).html(value.type_name))
+            })
+        },
+        error: function (error) {
+            alert("error");
+        },
+    })
+});
+
+$('#update').on('click', function (event) {
+    let id = $(this).attr('data-id');
+    let formData = new FormData($('#productForm')[0]);
+    for (var pair of formData.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
+    }
+
+    formData.append('_method', 'PUT');
+
+    $('#productModal *').prop('disabled', true);
+
+    $.ajax({
+        url: `/api/product/update/${id}`,
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        dataType: "json",
+        success: function (data, status) {
+            $('#productModal').modal("hide");
+            $('#productModal *').prop('disabled', false);
+            $('#productModal').trigger("reset");
+            $('input[name="document[]"]').remove();
+
+            $('.for-alert').prepend(`
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Successfully Updated!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>`);
+
+            $('.alert').fadeOut(5000, function () {
+                $(this).remove();
+            });
+            // $('#productsTable').DataTable().ajax.reload();
+
+        },
+        error: function (error) {
+            console.log(error.responseJSON.errors);
+            alert("error");
+            $('#productModal *').prop('disabled', false);
+        }
+    })
+})
+
+$(document).on('click', 'button.delete', function () {
+    let id = $(this).attr("data-id");
+    $.confirm({
+        title: 'Delete Product',
+        content: 'Do you want to delete this product?',
+        buttons: {
+            confirm: function () {
+                $.ajax({
+                    url: `/api/product/delete/${id}`,
+                    type: 'DELETE',
+                    dataType: "json",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (data) {
+                        $('.for-alert').prepend(`
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            Successfully Deleted!
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    `);
+                        $('.alert').fadeOut(5000, function () {
+                            $(this).remove();
+                        });
+                        $(`td:contains(${id})`).closest('tr').fadeOut(5000, function(){
+                            $(this).remove();
+                        });
+                        // dataTable.ajax.reload();
+                    },
+                    error: function () {
+                        alert('error')
+                    }
+                })
+            },
+
+            cancel: function () {
+                // $.alert('Cancelled!');
+            },
+        }
+    });
 });

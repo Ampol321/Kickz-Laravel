@@ -26,3 +26,8 @@ Route::get('/increment/{id}', [CartController::class, 'increment']);
 Route::get('/decrement/{id}', [CartController::class, 'decrement']);
 
 Route::get('/productTable', [ProductController::class, 'productIndex']);
+Route::get('/product/create', [ProductController::class, 'create']);
+Route::post('/product/store', [ProductController::class, 'store']);
+Route::get('/product/edit/{id}', [ProductController::class, 'edit']);
+Route::put('/product/update/{id}', [ProductController::class, 'update']);
+Route::delete('/product/delete/{id}', [ProductController::class, 'destroy']);

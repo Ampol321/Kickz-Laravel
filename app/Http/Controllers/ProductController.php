@@ -115,7 +115,7 @@ class ProductController extends Controller
     {
         $brands = brand::all();
         $types = type::all();
-        return View::make('products.create', compact('brands', 'types'));
+        return response()->json(['brands'=>$brands,'types'=>$types]);
     }
 
     /**
@@ -182,7 +182,8 @@ class ProductController extends Controller
             "product_id" => $products->id,
             "stock" => 0
         ]);
-        return redirect()->route('product.index')->with('message', 'Product Created!');
+        // return redirect()->route('product.index')->with('message', 'Product Created!');
+        return response()->json([]);
     }
 
     /**
@@ -218,7 +219,9 @@ class ProductController extends Controller
         $types = Type::where('id', '<>', $products->type_id)->get(['type_name', 'id']);
         $stocks = stock::where('product_id', $id)->first();
         // $products = product::find($id);
-        return View('products.edit', compact('products', 'brands', 'types', 'stocks'))->with('message', 'Products Edited');
+
+        // return View('products.edit', compact('products', 'brands', 'types', 'stocks'))->with('message', 'Products Edited');
+        return response()->json(['product'=>$products,'brands'=>$brands,'types'=>$types,'stocks'=>$stocks]);
     }
 
     /**
@@ -276,7 +279,8 @@ class ProductController extends Controller
             "stock" => $request->stock
         ]);
 
-        return redirect()->route('product.index')->with('message', 'Product Updated!');
+        // return redirect()->route('product.index')->with('message', 'Product Updated!');
+        return response()->json([]);
     }
 
     /**
@@ -285,6 +289,7 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         product::destroy($id);
-        return back()->with('message', 'Product Deleted');;
+        // return back()->with('message', 'Product Deleted');
+        return response()->json([]);
     }
 }

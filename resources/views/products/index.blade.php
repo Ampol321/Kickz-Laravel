@@ -3,9 +3,7 @@
 @section('content')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
-
     <script type="text/javascript" src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
-
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
@@ -15,9 +13,12 @@
         href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js">
     </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
     <div class="card-body">
         @if (session()->has('message'))
-            <div class="alert alert-success">
+            <div class="alert alert-success ">
                 <button type="button" class="close" data-dismiss="alert" style="display:inline-block">x</button>
                 {{ session()->get('message') }}
             </div>
@@ -26,7 +27,8 @@
             <h1><b>Products</b></h1>
             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
                 Stored Images</button>
-            <a href="{{ url('/product/create') }}" class="btn btn-success btn-sm"> Add Product </a>
+            <button {{-- href=" url('/product/create')" --}} id="create" type="button" data-bs-toggle="modal"
+                class="btn btn-success btn-sm" data-bs-target="#productModal"> Add Product </a>
         </center></br>
         <div class="container" style="width: 1000px;">
             @if (empty($productChart))
@@ -37,7 +39,7 @@
             @endif
         </div></br>
 
-        <div class="container" style="width: 1000px; padding:5px; border:2px solid #cecece;">
+        <div class="container" style="width: 1100px; padding:5px; border:2px solid #cecece;">
             {{-- {{ $dataTable->table() }}
             {{ $dataTable->scripts() }} --}}
             <table id="productsTable">
@@ -94,8 +96,86 @@
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
-    </script>
+
+    <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productModalLongTitle">Product</h5>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#productModal" class="close"
+                        data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="productForm" action="{{ url('product') }}" method="post" enctype="multipart/form-data">
+                        {!! csrf_field() !!}
+
+                        <label>Image</label></br>
+                        <input type="file" name="product_img[]" multiple id="product_img" class="form-control">
+                        @error('product_img')
+                            <small><i>*{{ $message }}</i></small>
+                        @enderror
+                        </br>
+                        <label>Product Name</label></br>
+                        <input type="text" name="product_name" id="product_name" class="form-control">
+                        @error('product_name')
+                            <small><i>*{{ $message }}</i></small>
+                        @enderror
+                        </br>
+
+                        <label for="brand__name">Brand Name</label>
+                        <select id="brandSelect" class="form-select form-control" name="brand_id">
+                            <option id="brandOption" value="" selected>Select Brand</option>
+                        </select>
+                        @error('brand_id')
+                            <small><i>*{{ $message }}</i></small>
+                        @enderror
+                        </br>
+
+                        <label>Colorway</label></br>
+                        <input type="text" name="colorway" id="colorway" class="form-control">
+                        @error('colorway')
+                            <small><i>*{{ $message }}</i></small>
+                        @enderror
+                        </br>
+                        <label for="type_name">Type</label>
+                        <select id="typeSelect" class="form-select form-control" name="type_id">
+                            <option id="typeOption" value="" selected>Select Type</option>
+
+                        </select>
+                        @error('type_id')
+                            <small><i>*{{ $message }}</i></small>
+                        @enderror
+                        </br>
+                        <label>Size</label></br>
+                        <input type="number" name="size" id="size" class="form-control">
+                        @error('size')
+                            <small><i>*{{ $message }}</i></small>
+                        @enderror
+                        </br>
+                        <label>Price</label></br>
+                        <input type="text" name="price" id="price" class="form-control">
+                        @error('price')
+                            <small><i>*{{ $message }}</i></small>
+                        @enderror
+                        </br>
+
+                        <label id="stockLabel">Stock</label></br>
+                        <input type="text" name="stock" id="stock" class="form-control">
+
+                        {{-- <input type="submit" value="Save" class="btn btn-success"></br></br> --}}
+                        <div class="modal-footer">
+                            <button id="update" type="button" class="btn btn-dark"
+                                data-dismiss="modal">Update</button>
+                            <button id="save" type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="{{ asset('jquery_datatables/products.js') }}"></script>
 @endsection

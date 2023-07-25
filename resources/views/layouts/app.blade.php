@@ -26,7 +26,7 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap4.min.css"
         integrity="sha512-PT0RvABaDhDQugEbpNMwgYBCnGCiTZMh9yOzUsJHDgl/dMhD9yjHAwoumnUk3JydV3QTcIkNDuN40CJxik5+WQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
+
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
@@ -162,6 +162,8 @@
                     </ul>
                 </div>
             </div>
+            <div class="for-alert" style="position:absolute; left:0%; width:100%; top:100%">
+            </div>
         </nav>
         <div class="container">
             <div class="card-body" id="search-results">
@@ -216,4 +218,5 @@
     </div>
     @include('layouts.scripts')
 </body>
+
 </html>
