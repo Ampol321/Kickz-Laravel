@@ -20,30 +20,20 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap4.min.css"
         integrity="sha512-PT0RvABaDhDQugEbpNMwgYBCnGCiTZMh9yOzUsJHDgl/dMhD9yjHAwoumnUk3JydV3QTcIkNDuN40CJxik5+WQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css"> --}}
-
-
+    
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <script src="js/addons/rating.js"></script>
-    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script> --}}
 
     <style>
-        /* .main {
-            width: 50%;
-            margin: 50px auto;
-        } */
-
         .has-search .form-control {
             padding-left: 2.375rem;
         }
@@ -203,7 +193,8 @@
 
                 function displaySearchResults(data) {
                     $('#search-results').empty();
-                    $('#search-results').append('<div class="text-center" style="margin-top:100px"><h1>Search</h1>There are ' + data
+                    $('#search-results').append(
+                        '<div class="text-center" style="margin-top:100px"><h1>Search</h1>There are ' + data
                         .searchResults.length + ' results.</div>');
                     data.searchResults.forEach(function(searchResult) {
                         var resultHtml =
@@ -225,5 +216,4 @@
     </div>
     @include('layouts.scripts')
 </body>
-
 </html>

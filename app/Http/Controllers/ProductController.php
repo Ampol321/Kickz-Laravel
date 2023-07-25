@@ -86,11 +86,18 @@ class ProductController extends Controller
                 color: \'white\',
             }}',
         ]);
+
         return $dataTable->render('products.index', compact('productChart'));
     }
 
-    public function home()
-    {
+    public function productIndex(){
+        $products = Product::with(['brand', 'type', 'stock'])
+        ->get();
+        
+        return response()->json($products);
+    }
+
+    public function home(){
         $products = DB::table('products')
             ->join('brands', 'brands.id', "=", 'products.brand_id')
             ->join('types', 'types.id', "=", 'products.type_id')
