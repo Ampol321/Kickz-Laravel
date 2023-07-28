@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ProductController;
-
+use App\Http\Controllers\ShipmentController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -31,3 +31,5 @@ Route::post('/product/store', [ProductController::class, 'store']);
 Route::get('/product/edit/{id}', [ProductController::class, 'edit']);
 Route::put('/product/update/{id}', [ProductController::class, 'update']);
 Route::delete('/product/delete/{id}', [ProductController::class, 'destroy']);
+
+Route::get('/shipmentTable', [ShipmentController::class, 'shipmentIndex']);

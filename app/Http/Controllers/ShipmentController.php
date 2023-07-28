@@ -88,6 +88,11 @@ class ShipmentController extends Controller
         // return View::make('shipments.index',compact('shipments'));
     }
 
+    public function shipmentIndex(){
+        $shipments=Shipment::all();
+        return response()->json($shipments);
+    }
+
     /**
      * Show the form for creating a new resource.
      */

@@ -23,6 +23,7 @@
                 {{ session()->get('message') }}
             </div>
         @endif
+
         <center>
             <h1><b>Products</b></h1>
             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
@@ -30,6 +31,7 @@
             <button {{-- href=" url('/product/create')" --}} id="create" type="button" data-bs-toggle="modal"
                 class="btn btn-success btn-sm" data-bs-target="#productModal"> Add Product </a>
         </center></br>
+
         <div class="container" style="width: 1000px;">
             @if (empty($productChart))
                 <div></div>
@@ -63,7 +65,7 @@
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal for images-->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -97,6 +99,7 @@
         </div>
     </div>
 
+    <!-- Modal for CRUD-->
     <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalCenterTitle"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -112,55 +115,69 @@
                     <form id="productForm" action="{{ url('product') }}" method="post" enctype="multipart/form-data">
                         {!! csrf_field() !!}
 
-                        <label>Image</label></br>
-                        <input type="file" name="product_img[]" multiple id="product_img" class="form-control">
+                        <label>Image:</label></br>
+                        <input type="file" name="product_img[]" multiple id="product_img" class="form-control" required>
                         @error('product_img')
                             <small><i>*{{ $message }}</i></small>
                         @enderror
                         </br>
-                        <label>Product Name</label></br>
-                        <input type="text" name="product_name" id="product_name" class="form-control">
+                        <label>Product Name:</label></br>
+                        <input type="text" name="product_name" id="product_name" class="form-control" required>
                         @error('product_name')
                             <small><i>*{{ $message }}</i></small>
                         @enderror
                         </br>
 
-                        <label for="brand__name">Brand Name</label>
-                        <select id="brandSelect" class="form-select form-control" name="brand_id">
-                            <option id="brandOption" value="" selected>Select Brand</option>
-                        </select>
-                        @error('brand_id')
-                            <small><i>*{{ $message }}</i></small>
-                        @enderror
-                        </br>
+                        <div class="row">
+                            <div class="col">
+                                <label for="brand__name">Brand Name:</label>
+                            </div>
+                            <div class="col">
+                                <label>Colorway:</label>
+                            </div>
+                        </div>
 
-                        <label>Colorway</label></br>
-                        <input type="text" name="colorway" id="colorway" class="form-control">
-                        @error('colorway')
-                            <small><i>*{{ $message }}</i></small>
-                        @enderror
-                        </br>
-                        <label for="type_name">Type</label>
-                        <select id="typeSelect" class="form-select form-control" name="type_id">
-                            <option id="typeOption" value="" selected>Select Type</option>
+                        <div class="row">
+                            <div class="col">
+                                <select id="brandSelect" class="form-select form-control" name="brand_id">
+                                    <option id="brandOption" value="" selected required>Select Brand</option>
+                                </select>
+                            </div>
 
-                        </select>
-                        @error('type_id')
-                            <small><i>*{{ $message }}</i></small>
-                        @enderror
-                        </br>
-                        <label>Size</label></br>
-                        <input type="number" name="size" id="size" class="form-control">
-                        @error('size')
-                            <small><i>*{{ $message }}</i></small>
-                        @enderror
-                        </br>
-                        <label>Price</label></br>
-                        <input type="text" name="price" id="price" class="form-control">
-                        @error('price')
-                            <small><i>*{{ $message }}</i></small>
-                        @enderror
-                        </br>
+                            <div class="col">
+                                <input type="text" name="colorway" id="colorway" class="form-control">
+                            </div>
+                        </div></br>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="type_name">Type:</label>
+                            </div>
+
+                            <div class="col-3">
+                                <label>Size:</label>
+                            </div>
+
+                            <div class="col-3">
+                                <label>Price:</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <select id="typeSelect" class="form-select form-control" name="type_id">
+                                    <option id="typeOption" value="" selected required>Select Type</option>
+                                </select>
+                            </div>
+
+                            <div class="col-3">
+                                <input type="number" name="size" id="size" class="form-control" required>
+                            </div>
+
+                            <div class="col-3">
+                                <input type="text" name="price" id="price" class="form-control" required>
+                            </div>
+                        </div></br>
 
                         <label id="stockLabel">Stock</label></br>
                         <input type="text" name="stock" id="stock" class="form-control">
@@ -171,11 +188,29 @@
                                 data-dismiss="modal">Update</button>
                             <button id="save" type="button" class="btn btn-primary">Save changes</button>
                         </div>
-
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    {{-- @error('brand_id')
+        <small><i>*{{ $message }}</i></small>
+    @enderror --}}
+
+    {{-- @error('colorway')
+        <small><i>*{{ $message }}</i></small>
+    @enderror --}}
+
+    {{-- @error('type_id')
+        <small><i>*{{ $message }}</i></small>
+    @enderror --}}
+
+    {{-- @error('size')
+        <small><i>*{{ $message }}</i></small>
+    @enderror --}}
+
+    {{-- @error('price')
+        <small><i>*{{ $message }}</i></small>
+    @enderror --}}
     <script src="{{ asset('jquery_datatables/products.js') }}"></script>
 @endsection
