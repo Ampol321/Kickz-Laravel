@@ -33,3 +33,8 @@ Route::put('/product/update/{id}', [ProductController::class, 'update']);
 Route::delete('/product/delete/{id}', [ProductController::class, 'destroy']);
 
 Route::get('/shipmentTable', [ShipmentController::class, 'shipmentIndex']);
+Route::get('/shipment/create', [ShipmentController::class, 'create']);
+Route::post('/shipment/store', [ShipmentController::class, 'store']);
+Route::get('/shipment/edit/{id}', [ShipmentController::class, 'edit']);
+Route::put('/shipment/update/{id}', [ShipmentController::class, 'update']);
+Route::delete('/shipment/delete/{id}', [ShipmentController::class, 'destroy']);

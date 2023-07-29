@@ -104,6 +104,7 @@
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
+
                 <div class="modal-header">
                     <h5 class="modal-title" id="productModalLongTitle">Product</h5>
                     <button type="button" data-bs-toggle="modal" data-bs-target="#productModal" class="close"
@@ -111,21 +112,17 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+
                 <div class="modal-body">
                     <form id="productForm" action="{{ url('product') }}" method="post" enctype="multipart/form-data">
                         {!! csrf_field() !!}
 
                         <label>Image:</label></br>
                         <input type="file" name="product_img[]" multiple id="product_img" class="form-control" required>
-                        @error('product_img')
-                            <small><i>*{{ $message }}</i></small>
-                        @enderror
                         </br>
+
                         <label>Product Name:</label></br>
                         <input type="text" name="product_name" id="product_name" class="form-control" required>
-                        @error('product_name')
-                            <small><i>*{{ $message }}</i></small>
-                        @enderror
                         </br>
 
                         <div class="row">
@@ -181,18 +178,27 @@
 
                         <label id="stockLabel">Stock</label></br>
                         <input type="text" name="stock" id="stock" class="form-control">
-
-                        {{-- <input type="submit" value="Save" class="btn btn-success"></br></br> --}}
-                        <div class="modal-footer">
-                            <button id="update" type="button" class="btn btn-dark"
-                                data-dismiss="modal">Update</button>
-                            <button id="save" type="button" class="btn btn-primary">Save changes</button>
-                        </div>
                     </form>
                 </div>
+
+                <div class="modal-footer">
+                    <button id="update" type="button" class="btn btn-dark"
+                        data-dismiss="modal">Update</button>
+                    <button id="save" type="button" class="btn btn-success">Save</button>
+                </div>
+                
             </div>
         </div>
     </div>
+
+    {{-- @error('product_img')
+        <small><i>*{{ $message }}</i></small>
+    @enderror --}}
+
+    {{-- @error('product_name')
+        <small><i>*{{ $message }}</i></small>
+    @enderror --}}
+
     {{-- @error('brand_id')
         <small><i>*{{ $message }}</i></small>
     @enderror --}}

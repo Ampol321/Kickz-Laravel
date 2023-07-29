@@ -123,7 +123,7 @@ $('#save').on('click', function () {
 
             $('.for-alert').prepend(`
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                Successfully Created!
+                Product Successfully Created!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -212,7 +212,7 @@ $('#update').on('click', function (event) {
 
             $('.for-alert').prepend(`
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                Successfully Updated!
+                Product Successfully Updated!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -249,7 +249,7 @@ $(document).on('click', 'button.delete', function () {
                     success: function (data) {
                         $('.for-alert').prepend(`
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            Successfully Deleted!
+                            Product Successfully Deleted!
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>

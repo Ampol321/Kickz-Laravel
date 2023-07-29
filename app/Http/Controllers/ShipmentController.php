@@ -98,7 +98,8 @@ class ShipmentController extends Controller
      */
     public function create()
     {
-        return View::make('shipments.create');
+        // return View::make('shipments.create');
+        return response()->json([]);
     }
 
     /**
@@ -149,7 +150,8 @@ class ShipmentController extends Controller
         $shipments->shipment_name = $request->shipment_name;
         $shipments->shipment_cost = $request->shipment_cost;
         $shipments->save();
-        return redirect()->route('shipment.index')->with('message', 'Shipment Created!');
+        // return redirect()->route('shipment.index')->with('message', 'Shipment Created!');
+        return response()->json([]);
     }
 
     /**
@@ -166,7 +168,8 @@ class ShipmentController extends Controller
     public function edit(string $id)
     {
         $shipments = shipment::find($id);
-        return View::make('shipments.edit', compact('shipments'))->with('message', 'Shipment Edited');
+        // return View::make('shipments.edit', compact('shipments'))->with('message', 'Shipment Edited');
+        return response()->json(['shipment'=>$shipments]);
     }
 
     /**
@@ -216,6 +219,7 @@ class ShipmentController extends Controller
     public function destroy(string $id)
     {
         shipment::destroy($id);
-        return back()->with('message', 'Shipment Deleted');;
+        // return back()->with('message', 'Shipment Deleted');
+        return response()->json([]);
     }
 }

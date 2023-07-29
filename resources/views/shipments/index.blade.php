@@ -28,7 +28,8 @@
             <h1><b>Shipments</b></h1>
             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
                 Stored Images</button>
-            <a href="{{ url('/shipment/create') }}" class="btn btn-success btn-sm"> Add Shipment </a>
+            <button {{-- href="{{ url('/shipment/create') }}" --}} id="create" type="button" data-bs-toggle="modal"
+                class="btn btn-success btn-sm" data-bs-target="#shipmentModal"> Add Shipment </a>
         </center></br>
 
         <div class="container">
@@ -107,17 +108,47 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Shipment Images</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <h5 class="modal-title" id="shipmentModalLongTitle">Shipment Images</h5>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#shipmentModal" class="close"
+                        data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
 
+                <div class="modal-body">
+                    <form id="shipmentForm" action="{{ url('shipment') }}" method="post" enctype="multipart/form-data">
+                        {!! csrf_field() !!}
+
+                        <label>Image:</label></br>
+                        <input type="file" name="shipment_img[]" multiple id="shipment_img" class="form-control"
+                            required>
+                        </br>
+
+                        <div class="row">
+                            <div class="col-8">
+                                <label>Shipment Name:</label>
+                            </div>
+
+                            <div class="col-4">
+                                <label>Shipment Cost:</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-8">
+                                <input type="text" name="shipment_name" id="shipment_name" class="form-control" required>
+                            </div>
+                            <div class="col-4">
+                                <input type="text" name="shipment_cost" id="shipment_cost" class="form-control" required>
+                            </div>
+                        </div>
+                    </form>
                 </div>
+
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button id="update" type="button" class="btn btn-dark"
+                        data-dismiss="modal">Update</button>
+                    <button id="save" type="button" class="btn btn-success">Save</button>
                 </div>
             </div>
         </div>
