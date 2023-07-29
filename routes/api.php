@@ -7,6 +7,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\BrandController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -46,3 +47,10 @@ Route::post('/payment/store', [PaymentController::class, 'store']);
 Route::get('/payment/edit/{id}', [PaymentController::class, 'edit']);
 Route::put('/payment/update/{id}', [PaymentController::class, 'update']);
 Route::delete('/payment/delete/{id}', [PaymentController::class, 'destroy']);
+
+Route::get('/brandTable', [BrandController::class, 'brandIndex']);
+Route::get('/brand/create', [BrandController::class, 'create']);
+Route::post('/brand/store', [BrandController::class, 'store']);
+Route::get('/brand/edit/{id}', [BrandController::class, 'edit']);
+Route::put('/brand/update/{id}', [BrandController::class, 'update']);
+Route::delete('/brand/delete/{id}', [BrandController::class, 'destroy']);

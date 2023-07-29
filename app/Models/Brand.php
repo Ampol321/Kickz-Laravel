@@ -13,11 +13,11 @@ class Brand extends Model implements Searchable
     use HasFactory;
 
     protected $table = 'brands';
-    protected $primaryKey = 'brand_id';
+    protected $primaryKey = 'id';
     protected $fillable = ['img_path','brand_name'];
 
     public function products(){
-        return $this->hasMany(Product::class,'brand_id');
+        return $this->hasMany(Product::class,'id');
     }
 
     public function getSearchResult(): SearchResult

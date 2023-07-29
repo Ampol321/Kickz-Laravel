@@ -89,12 +89,18 @@ class BrandController extends Controller
         // return View::make('brands.index',compact('brands'));
     }
 
+    public function brandIndex(){
+        $brands=Brand::all();
+        return response()->json($brands);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view('brands.create');
+        // return view('brands.create');
+        return response()->json([]);
     }
 
     /**
@@ -117,6 +123,7 @@ class BrandController extends Controller
         Validator::make($request->all(), $rules, $messages)->validate();
 
         $brands = new brand;
+        
         $img_path = array();
         if ($request->hasFile('img_path')) {
             foreach ($request->file('img_path') as $file) {
@@ -131,17 +138,12 @@ class BrandController extends Controller
             }
             $brands->img_path = implode(',', $img_path);
         }
-        // if($request->file()) {
-        //     $fileName = time().'_'.$request->file('img_path')->getClientOriginalName();
-        //     $filePath = $request->file('img_path')->storeAs('uploads', $fileName,'public');
-        //     $path = Storage::putFileAs(
-        //         'public/images', $request->file('img_path'), $fileName
-        //     );
-        //     $brands->img_path = '/storage/images/' . $fileName;
-        // }
+
         $brands->brand_name = $request->brand_name;
         $brands->save();
-        return redirect()->route('brand.index')->with('message', 'Brand Created!');
+
+        // return redirect()->route('brand.index')->with('message', 'Brand Created!');
+        return response()->json([]);
     }
 
     /**
@@ -158,7 +160,8 @@ class BrandController extends Controller
     public function edit(string $id)
     {
         $brands = brand::find($id);
-        return View('brands.edit', compact('brands'))->with('message', 'Brand Edited');
+        // return View('brands.edit', compact('brands'))->with('message', 'Brand Edited');
+        return response()->json(['brand'=>$brands]);
     }
 
     /**
@@ -196,7 +199,8 @@ class BrandController extends Controller
         }
         $brands->brand_name = $request->brand_name;
         $brands->save();
-        return redirect()->route('brand.index')->with('message', 'Brand Updated');
+        // return redirect()->route('brand.index')->with('message', 'Brand Updated');
+        return response()->json([]);
     }
 
     /**
@@ -205,6 +209,7 @@ class BrandController extends Controller
     public function destroy(string $id)
     {
         brand::destroy($id);
-        return back()->with('message', 'Brand Deleted');;
+        // return back()->with('message', 'Brand Deleted');
+        return response()->json([]);
     }
 }

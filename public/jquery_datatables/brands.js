@@ -1,6 +1,6 @@
-let dataTable = $('#paymentsTable').DataTable({
+let dataTable = $('#brandsTable').DataTable({
     ajax: {
-        url: '/api/paymentTable',
+        url: '/api/brandTable',
         dataSrc: ''
     },
     responsive: true,
@@ -12,24 +12,26 @@ let dataTable = $('#paymentsTable').DataTable({
         'csvHtml5',
         'pdfHtml5'
     ],
-    columns: [{
+    columns: [    
+    {
         data: 'id'
     },
+    
     {
         data: null,
         render: function (data) {
-            return `<img src="${data.payment_img}" width="100" height="100" />`;
+            return `<img src="${data.img_path}" width="100" height="100" />`;
         }
     },
 
     {
-        data: 'payment_name'
+        data: 'brand_name'
     },
 
     {
         data: null,
         render: function (data) {
-            return `<button type="button" data-bs-toggle="modal" data-bs-target="#paymentModal" data-id="${data.id}" class="btn btn-primary edit">
+            return `<button type="button" data-bs-toggle="modal" data-bs-target="#brandModal" data-id="${data.id}" class="btn btn-primary edit">
                     <i class="fas fa-edit"></i>
                 </button>
                 <button type="button" data-id="${data.id}" class="btn btn-danger btn-delete delete">
@@ -45,14 +47,14 @@ $('#create').on('click', function () {
     $('#save').show();
 
     $.ajax({
-        url: "/api/payment/create",
+        url: "/api/brand/create",
         type: "GET",
         dataType: "json",
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function (data) {
-            $('#paymentForm').trigger('reset')     
+            $('#brandForm').trigger('reset')     
         },
         error: function (error) {
             alert("error");
@@ -61,13 +63,13 @@ $('#create').on('click', function () {
 })
 
 $('#save').on('click', function () {
-    let formData = new FormData($('#paymentForm')[0]);
+    let formData = new FormData($('#brandForm')[0]);
     // for (var pair of formData.entries()) {
     //     console.log(pair[0] + ', ' + pair[1]);
     // }
-    $('#paymentModal *').prop('disabled', true);
+    $('#brandModal *').prop('disabled', true);
     $.ajax({
-        url: "/api/payment/store",
+        url: "/api/brand/store",
         type: "POST",
         dataType: "json",
         data: formData,
@@ -77,13 +79,13 @@ $('#save').on('click', function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function (data) {
-            $('#paymentModal *').prop('disabled', false);
-            $('#paymentForm').trigger('reset')
-            $('#paymentModal').modal('hide')
+            $('#brandModal *').prop('disabled', false);
+            $('#brandForm').trigger('reset')
+            $('#brandModal').modal('hide')
 
             $('.for-alert').prepend(`
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                Payment Successfully Created!
+                Brand Successfully Created!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -107,14 +109,14 @@ $(document).on('click', 'button.edit', function () {
     let id = $(this).attr('data-id');
     $('#update').attr('data-id',id);
     $.ajax({
-        url: `/api/payment/edit/${id}`,
+        url: `/api/brand/edit/${id}`,
         type: "GET",
         dataType: "json",
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function (data) {
-            $('#payment_name').val(data.payment.payment_name);  
+            $('#brand_name').val(data.brand.brand_name);  
         },
         error: function (error) {
             alert("error");
@@ -124,15 +126,15 @@ $(document).on('click', 'button.edit', function () {
 
 $('#update').on('click', function (event) {
     let id = $(this).attr('data-id');
-    let formData = new FormData($('#paymentForm')[0]);
+    let formData = new FormData($('#brandForm')[0]);
     // for (var pair of formData.entries()) {
     //     console.log(pair[0] + ', ' + pair[1]);
     // }
     formData.append('_method', 'PUT');
-    $('#paymentModal *').prop('disabled', true);
+    $('#brandModal *').prop('disabled', true);
 
     $.ajax({
-        url: `/api/payment/update/${id}`,
+        url: `/api/brand/update/${id}`,
         type: "POST",
         data: formData,
         contentType: false,
@@ -142,14 +144,14 @@ $('#update').on('click', function (event) {
         },
         dataType: "json",
         success: function (data, status) {
-            $('#paymentModal').modal("hide");
-            $('#paymentModal *').prop('disabled', false);
-            $('#paymentModal').trigger("reset");
+            $('#brandModal').modal("hide");
+            $('#brandModal *').prop('disabled', false);
+            $('#brandModal').trigger("reset");
             $('input[name="document[]"]').remove();
 
             $('.for-alert').prepend(`
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                Payment Successfully Updated!
+                Brand Successfully Updated!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -162,7 +164,7 @@ $('#update').on('click', function (event) {
         error: function (error) {
             console.log(error.responseJSON.errors);
             alert("error");
-            $('#paymentModal *').prop('disabled', false);
+            $('#brandModal *').prop('disabled', false);
         }
     })
 })
@@ -170,12 +172,12 @@ $('#update').on('click', function (event) {
 $(document).on('click', 'button.delete', function () {
     let id = $(this).attr("data-id");
     $.confirm({
-        title: 'Delete Payment',
-        content: 'Do you want to delete this payment?',
+        title: 'Delete Brand',
+        content: 'Do you want to delete this brand?',
         buttons: {
             confirm: function () {
                 $.ajax({
-                    url: `/api/payment/delete/${id}`,
+                    url: `/api/brand/delete/${id}`,
                     type: 'DELETE',
                     dataType: "json",
                     headers: {
@@ -184,7 +186,7 @@ $(document).on('click', 'button.delete', function () {
                     success: function (data) {
                         $('.for-alert').prepend(`
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            Payment Successfully Deleted!
+                            Brand Successfully Deleted!
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>

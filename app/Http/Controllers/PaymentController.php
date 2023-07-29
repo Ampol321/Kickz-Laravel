@@ -213,7 +213,8 @@ class PaymentController extends Controller
         // }
         // $payments->payment_name = $request->payment_name;
         // $payments->save();
-        return redirect()->route('payment.index')->with('message', 'Payment Updated!');
+        // return redirect()->route('payment.index')->with('message', 'Payment Updated!');
+        return response()->json([]);
     }
 
     /**
