@@ -88,12 +88,18 @@ class PaymentController extends Controller
         return $dataTable->render('payments.index',compact('paymentChart'));
     }
 
+    public function paymentIndex(){
+        $payments=Payment::all();
+        return response()->json($payments);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return View::make('payments.create');
+        // return View::make('payments.create');
+        return response()->json([]);
     }
 
     /**
@@ -138,7 +144,8 @@ class PaymentController extends Controller
         $payments->payment_name = $request->payment_name;
         $payments->save();
 
-        return redirect()->route('payment.index')->with('message', 'Payment Created!');
+        // return redirect()->route('payment.index')->with('message', 'Payment Created!');
+        return response()->json([]);
     }
 
     /**
@@ -155,7 +162,8 @@ class PaymentController extends Controller
     public function edit(string $id)
     {
         $payments = payment::find($id);
-        return View::make('payments.edit', compact('payments'))->with('message', 'Payment Edited');
+        // return View::make('payments.edit', compact('payments'))->with('message', 'Payment Edited');
+        return response()->json(['payment'=>$payments]);
     }
 
     /**
@@ -214,6 +222,7 @@ class PaymentController extends Controller
     public function destroy(string $id)
     {
         payment::destroy($id);
-        return back()->with('message', 'Payment Deleted');;
+        // return back()->with('message', 'Payment Deleted');
+        return response()->json([]);
     }
 }

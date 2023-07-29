@@ -6,6 +6,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShipmentController;
+use App\Http\Controllers\PaymentController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -38,3 +39,10 @@ Route::post('/shipment/store', [ShipmentController::class, 'store']);
 Route::get('/shipment/edit/{id}', [ShipmentController::class, 'edit']);
 Route::put('/shipment/update/{id}', [ShipmentController::class, 'update']);
 Route::delete('/shipment/delete/{id}', [ShipmentController::class, 'destroy']);
+
+Route::get('/paymentTable', [PaymentController::class, 'paymentIndex']);
+Route::get('/payment/create', [PaymentController::class, 'create']);
+Route::post('/payment/store', [PaymentController::class, 'store']);
+Route::get('/payment/edit/{id}', [PaymentController::class, 'edit']);
+Route::put('/payment/update/{id}', [PaymentController::class, 'update']);
+Route::delete('/payment/delete/{id}', [PaymentController::class, 'destroy']);

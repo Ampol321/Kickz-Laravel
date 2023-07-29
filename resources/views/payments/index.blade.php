@@ -1,6 +1,21 @@
 @extends('layouts.tables')
 @extends('layouts.app')
 @section('content')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js">
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
     <div class="card-body">
         @if (session()->has('message'))
             <div class="alert alert-success">
@@ -8,11 +23,13 @@
                 {{ session()->get('message') }}
             </div>
         @endif
+
         <center>
             <h1><b>Payments</b></h1>
             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
                 Stored Images</button>
-            <a href="{{ url('/payment/create') }}" class="btn btn-success btn-sm"> Add Payment </a>
+            <button {{-- href="{{ url('/payment/create') }}" --}} id="create" type="button" data-bs-toggle="modal"
+                class="btn btn-success btn-sm" data-bs-target="#paymentModal"> Add Payment </a>
         </center></br>
 
         <div class="container">
@@ -28,39 +45,29 @@
                             </div>
                         @endif
                     </div>
+
                     <div class="col-md-8" style="padding:5px; border:2px solid #cecece;">
-                        {{ $dataTable->table() }}
-                        {{ $dataTable->scripts() }}
-                        {{-- <div class="table-responsive">
-                <table class="table">
-                    <tr>
-                        <td><b>Image:</b></td>
-                        <td><b>Payment Name:</b></td>
-                        <td><b>Actions:</b></td>
-                    </tr>
-                    @foreach ($payments as $payment)
-                    <tr>
-                        <td style="vertical-align: middle;"><img src="{{url($payment->payment_img)}}" width="100px" height="100px"></td>
-                        <td style="vertical-align: middle;">{{$payment->payment_name}}</td>
-                        <td style="vertical-align: middle;">
-                            <a href="{{route('payment.edit',$payment->id)}}"><button class="btn btn-primary">Edit</button></a>
-                            <form method="POST" action="{{route('payment.destroy',$payment->id)}}" accept-charset="UTF-8" style="display:inline">
-                                {{ method_field('DELETE') }}
-                                {{ csrf_field() }}
-                                <button type="submit" class="btn btn-danger" onclick="return confirm(&quot;Confirm delete?&quot;)">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
-                </table>
-            </div> --}}
+                        {{-- {{ $dataTable->table() }}
+                        {{ $dataTable->scripts() }} --}}
+                        <table id="paymentsTable">
+                            <thead>
+                                <tr>
+                                    <th>Payment ID</th>
+                                    <th>Payment Image</th>
+                                    <th>Payment Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal for images-->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -85,24 +92,6 @@
                             <img src="{{ $item }}" style="height:100px; width:100px">
                         @endforeach
                     @endforeach
-                    {{-- @php
-                        $image = DB::table('payments')->where('id', 7)->first();
-                        $images = explode(',',$image->payment_img);
-                    @endphp
-                    @foreach ($images as $item)
-                        <img src = "{{URL::to($item)}}" style="height:100px; width:100px">
-                    @endforeach
-
-                    @foreach ($payments as $payment)
-                        <div>
-                            @php
-                                $imagePaths = explode('|', $payment->payment_img);
-                            @endphp
-                            @foreach ($imagePaths as $path)
-                                <img src="{{ asset($path) }}" alt="{{ $payment->payment_name }}" />
-                            @endforeach
-                        </div>
-                    @endforeach --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -111,4 +100,41 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal for CRUD-->
+    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentModalLongTitle">Payment Images</h5>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#paymentModal" class="close"
+                        data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="paymentForm" action="{{ url('payment') }}" method="post" enctype="multipart/form-data">
+                        {!! csrf_field() !!}
+
+                        <label>Image:</label></br>
+                        <input type="file" name="payment_img[]" multiple id="payment_img" class="form-control"
+                            required>
+                        </br>
+
+                        <label>Payment Name:</label>
+                        <input type="text" name="payment_name" id="payment_name" class="form-control" required>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button id="update" type="button" class="btn btn-dark" data-dismiss="modal">Update</button>
+                    <button id="save" type="button" class="btn btn-success">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ asset('jquery_datatables/payments.js') }}"></script>
 @endsection

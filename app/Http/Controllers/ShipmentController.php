@@ -210,7 +210,8 @@ class ShipmentController extends Controller
         $shipments->shipment_name = $request->shipment_name;
         $shipments->shipment_cost = $request->shipment_cost;
         $shipments->save();
-        return redirect()->route('shipment.index')->with('message', 'Shipment Updated!');
+        // return redirect()->route('shipment.index')->with('message', 'Shipment Updated!');
+        return response()->json([]);
     }
 
     /**
