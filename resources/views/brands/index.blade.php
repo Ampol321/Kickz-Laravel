@@ -48,7 +48,7 @@
                     <div class="col-md-8" style="padding:5px; border:2px solid #cecece;">
                         {{-- {{ $dataTable->table() }}
                         {{ $dataTable->scripts() }} --}}
-                        <table id="brandsTable">
+                        <table id="brandsTable" class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>Brand ID</th>

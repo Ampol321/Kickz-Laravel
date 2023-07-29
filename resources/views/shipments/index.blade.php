@@ -49,7 +49,7 @@
                     <div class="col-md-8" style="padding:5px; border:2px solid #cecece;">
                         {{-- {{ $dataTable->table() }}
                         {{ $dataTable->scripts() }} --}}
-                        <table id="shipmentsTable">
+                        <table id="shipmentsTable" class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>Shipment ID</th>

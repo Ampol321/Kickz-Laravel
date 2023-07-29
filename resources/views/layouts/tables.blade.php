@@ -15,4 +15,14 @@
         text-align: center;
     }
 
+    .dataTables_wrapper .dataTable thead th {
+        background-color: #212529;
+        color: #fff;
+    }
+
+    .dataTables_wrapper .dataTable tbody td {
+        vertical-align: middle;
+    }
+
+    
 </style>
