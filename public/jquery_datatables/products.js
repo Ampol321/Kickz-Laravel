@@ -74,6 +74,7 @@ $('#create').on('click', function () {
     $('#stockLabel').hide();
     $('#update').hide();
     $('#save').show();
+    $('#productModal *').prop('disabled', false);
     clearSelect()
     $.ajax({
         url: "/api/product/create",
@@ -92,7 +93,7 @@ $('#create').on('click', function () {
             })
             $('#productForm').trigger('reset')
 
-            
+
         },
         error: function (error) {
             alert("error");
@@ -134,7 +135,8 @@ $('#save').on('click', function () {
             });
         },
         error: function (error) {
-            alert("error");
+            // alert("error");
+            $('#productModal *').prop('disabled', false);
         },
     })
 })
@@ -147,7 +149,7 @@ $(document).on('click', 'button.edit', function () {
     $('input[name="document[]"]').remove();
 
     let id = $(this).attr('data-id');
-    $('#update').attr('data-id',id);
+    $('#update').attr('data-id', id);
     $.ajax({
         url: `/api/product/edit/${id}`,
         type: "GET",
@@ -258,7 +260,7 @@ $(document).on('click', 'button.delete', function () {
                         $('.alert').fadeOut(5000, function () {
                             $(this).remove();
                         });
-                        $(`td:contains(${id})`).closest('tr').fadeOut(5000, function(){
+                        $(`td:contains(${id})`).closest('tr').fadeOut(5000, function () {
                             $(this).remove();
                         });
                         // dataTable.ajax.reload();
@@ -274,4 +276,55 @@ $(document).on('click', 'button.delete', function () {
             },
         }
     });
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const productForm = document.getElementById('productForm');
+    const updateBtn = document.getElementById('update');
+    const saveBtn = document.getElementById('save');
+
+    updateBtn.addEventListener('click', validateForm);
+    saveBtn.addEventListener('click', validateForm);
+
+    function validateForm() {
+        const productImgInput = document.getElementById('product_img');
+        const productNameInput = document.getElementById('product_name');
+        const brandSelect = document.getElementById('brandSelect');
+        const typeSelect = document.getElementById('typeSelect');
+        const sizeInput = document.getElementById('size');
+        const priceInput = document.getElementById('price');
+
+        if (productImgInput.files.length === 0) {
+            alert('Please select at least one image.');
+            return;
+        }
+
+        if (productNameInput.value.trim() === '') {
+            alert('Product Name field is required.');
+            return;
+        }
+
+        if (brandSelect.value === '') {
+            alert('Please select a Brand.');
+            return;
+        }
+
+        if (typeSelect.value === '') {
+            alert('Please select a Type.');
+            return;
+        }
+
+        if (isNaN(sizeInput.value) || Number(sizeInput.value) <= 0) {
+            alert('Please enter a valid Size.');
+            return;
+        }
+
+        if (isNaN(priceInput.value) || Number(priceInput.value) <= 0) {
+            alert('Please enter a valid Price.');
+            return;
+        }
+
+        productForm.submit();
+    }
 });

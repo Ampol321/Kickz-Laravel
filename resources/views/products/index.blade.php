@@ -182,11 +182,10 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button id="update" type="button" class="btn btn-dark"
-                        data-dismiss="modal">Update</button>
+                    <button id="update" type="button" class="btn btn-dark" data-dismiss="modal">Update</button>
                     <button id="save" type="button" class="btn btn-success">Save</button>
                 </div>
-                
+
             </div>
         </div>
     </div>

@@ -43,7 +43,7 @@ let dataTable = $('#paymentsTable').DataTable({
 $('#create').on('click', function () {
     $('#update').hide();
     $('#save').show();
-
+    $('#paymentModal *').prop('disabled', false);
     $.ajax({
         url: "/api/payment/create",
         type: "GET",
@@ -52,7 +52,7 @@ $('#create').on('click', function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function (data) {
-            $('#paymentForm').trigger('reset')     
+            $('#paymentForm').trigger('reset')
         },
         error: function (error) {
             alert("error");
@@ -94,7 +94,8 @@ $('#save').on('click', function () {
             });
         },
         error: function (error) {
-            alert("error");
+            // alert("error");
+            $('#paymentModal *').prop('disabled', false);
         },
     })
 })
@@ -105,7 +106,7 @@ $(document).on('click', 'button.edit', function () {
     $('input[name="document[]"]').remove();
 
     let id = $(this).attr('data-id');
-    $('#update').attr('data-id',id);
+    $('#update').attr('data-id', id);
     $.ajax({
         url: `/api/payment/edit/${id}`,
         type: "GET",
@@ -114,7 +115,7 @@ $(document).on('click', 'button.edit', function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function (data) {
-            $('#payment_name').val(data.payment.payment_name);  
+            $('#payment_name').val(data.payment.payment_name);
         },
         error: function (error) {
             alert("error");
@@ -193,7 +194,7 @@ $(document).on('click', 'button.delete', function () {
                         $('.alert').fadeOut(5000, function () {
                             $(this).remove();
                         });
-                        $(`td:contains(${id})`).closest('tr').fadeOut(5000, function(){
+                        $(`td:contains(${id})`).closest('tr').fadeOut(5000, function () {
                             $(this).remove();
                         });
                     },
@@ -202,9 +203,35 @@ $(document).on('click', 'button.delete', function () {
                     }
                 })
             },
-            
+
             cancel: function () {
             },
         }
     });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const paymentForm = document.getElementById('paymentForm');
+    const updateBtn = document.getElementById('update');
+    const saveBtn = document.getElementById('save');
+
+    updateBtn.addEventListener('click', validateForm);
+    saveBtn.addEventListener('click', validateForm);
+
+    function validateForm() {
+        const paymentImg = document.getElementById('payment_img');
+        const paymentName = document.getElementById('payment_name');
+
+        if (paymentImg.files.length === 0) {
+            alert('Please select an image.');
+            return;
+        }
+
+        if (paymentName.value.trim() === '') {
+            alert('Please enter a payment name.');
+            return;
+        }
+
+        paymentForm.submit();
+    }
 });

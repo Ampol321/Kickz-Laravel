@@ -45,7 +45,7 @@ let dataTable = $('#brandsTable').DataTable({
 $('#create').on('click', function () {
     $('#update').hide();
     $('#save').show();
-
+    $('#brandModal *').prop('disabled', false);
     $.ajax({
         url: "/api/brand/create",
         type: "GET",
@@ -96,7 +96,8 @@ $('#save').on('click', function () {
             });
         },
         error: function (error) {
-            alert("error");
+            // alert("error");
+            $('#brandModal *').prop('disabled', false);
         },
     })
 })
@@ -209,4 +210,30 @@ $(document).on('click', 'button.delete', function () {
             },
         }
     });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const brandForm = document.getElementById('brandForm');
+    const updateBtn = document.getElementById('update');
+    const saveBtn = document.getElementById('save');
+
+    updateBtn.addEventListener('click', validateForm);
+    saveBtn.addEventListener('click', validateForm);
+
+    function validateForm() {
+        const brandImg = document.getElementById('img_path');
+        const brandName = document.getElementById('brand_name');
+
+        if (brandImg.files.length === 0) {
+            alert('Please select an image.');
+            return;
+        }
+
+        if (brandName.value.trim() === '') {
+            alert('Please enter a brand name.');
+            return;
+        }
+
+        brandForm.submit();
+    }
 });
