@@ -1,4 +1,8 @@
 <style>
+    small {
+        color:red;
+    }
+
     th,
     td {
         text-align: center;

@@ -1,6 +1,10 @@
 @extends('layouts.tables')
 @extends('layouts.app')
 @section('content')
+    {{-- Form Validation --}}
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+    {{-- JQuery DataTables --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
@@ -107,8 +111,8 @@
 
                 <div class="modal-header">
                     <h5 class="modal-title" id="productModalLongTitle">Product</h5>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#productModal" class="close"
-                        data-dismiss="modal" aria-label="Close">
+                    <button id="close" type="button" data-bs-toggle="modal" data-bs-target="#productModal"
+                        class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -118,11 +122,13 @@
                         {!! csrf_field() !!}
 
                         <label>Image:</label></br>
-                        <input type="file" name="product_img[]" multiple id="product_img" class="form-control" required>
+                        <input type="file" name="product_img[]" multiple id="product_img" class="form-control"
+                            accept=".jpg, .jpeg, .png" required>
                         </br>
 
                         <label>Product Name:</label></br>
-                        <input type="text" name="product_name" id="product_name" class="form-control" required>
+                        <input type="text" name="product_name" id="product_name" class="form-control" minlength="2"
+                            required>
                         </br>
 
                         <div class="row">
@@ -183,7 +189,7 @@
 
                 <div class="modal-footer">
                     <button id="update" type="button" class="btn btn-dark" data-dismiss="modal">Update</button>
-                    <button id="save" type="button" class="btn btn-success">Save</button>
+                    <button id="save" type="button" class="submit btn btn-success">Save</button>
                 </div>
 
             </div>

@@ -43,7 +43,6 @@ let dataTable = $('#paymentsTable').DataTable({
 $('#create').on('click', function () {
     $('#update').hide();
     $('#save').show();
-    $('#paymentModal *').prop('disabled', false);
     $.ajax({
         url: "/api/payment/create",
         type: "GET",
@@ -65,7 +64,6 @@ $('#save').on('click', function () {
     // for (var pair of formData.entries()) {
     //     console.log(pair[0] + ', ' + pair[1]);
     // }
-    $('#paymentModal *').prop('disabled', true);
     $.ajax({
         url: "/api/payment/store",
         type: "POST",
@@ -95,7 +93,6 @@ $('#save').on('click', function () {
         },
         error: function (error) {
             // alert("error");
-            $('#paymentModal *').prop('disabled', false);
         },
     })
 })
@@ -210,28 +207,36 @@ $(document).on('click', 'button.delete', function () {
     });
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    const paymentForm = document.getElementById('paymentForm');
-    const updateBtn = document.getElementById('update');
-    const saveBtn = document.getElementById('save');
+$(function () {
+    $("#paymentForm").validate({
+        errorElement: "small",
+        rules: {
+            payment_img: {
+                required: true,
+            },
+            payment_name: {
+                required: true,
+                minlength: 2,
+            },
+        },
+        messages: {
+            payment_img: {
+                required: "Please select an image.",
+            },
+            payment_name: {
+                required: "Please enter a payment name.",
+                minlength: "Payment name must be at least 2 characters.",
+            },
+        },
+        submitHandler: function (form) {
+        },
+    });
 
-    updateBtn.addEventListener('click', validateForm);
-    saveBtn.addEventListener('click', validateForm);
+    $("#save").click(function () {
+        $("#paymentForm").submit();
+    });
 
-    function validateForm() {
-        const paymentImg = document.getElementById('payment_img');
-        const paymentName = document.getElementById('payment_name');
-
-        if (paymentImg.files.length === 0) {
-            alert('Please select an image.');
-            return;
-        }
-
-        if (paymentName.value.trim() === '') {
-            alert('Please enter a payment name.');
-            return;
-        }
-
-        paymentForm.submit();
-    }
+    $("#close").click(function (){
+        $("#paymentForm").find("small").remove();
+    });
 });

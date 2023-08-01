@@ -1,6 +1,10 @@
 @extends('layouts.tables')
 @extends('layouts.app')
 @section('content')
+    {{-- Form Validation --}}
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+    {{-- JQuery DataTables --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
@@ -28,8 +32,8 @@
             <h1><b>Brands</b></h1>
             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
                 Stored Images</button>
-            <button {{--href="{{ url('/brand/create') }}"--}} id="create" type="button" data-bs-toggle="modal"
-            class="btn btn-success btn-sm" data-bs-target="#brandModal"> Add Brand </button>
+            <button {{-- href="{{ url('/brand/create') }}" --}} id="create" type="button" data-bs-toggle="modal"
+                class="btn btn-success btn-sm" data-bs-target="#brandModal"> Add Brand </button>
         </center></br>
 
         <div class="container">
@@ -107,7 +111,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="brandModalLongTitle">Brands</h5>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#brandModal" class="close"
+                    <button id="close" type="button" data-bs-toggle="modal" data-bs-target="#brandModal" class="close"
                         data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -119,7 +123,7 @@
 
                         <label>Image:</label></br>
                         <input type="file" name="img_path[]" multiple id="img_path" class="form-control"
-                            required>
+                            accept=".jpg, .jpeg, .png" required>
                         </br>
 
                         <label>Brand Name:</label>

@@ -74,7 +74,6 @@ $('#create').on('click', function () {
     $('#stockLabel').hide();
     $('#update').hide();
     $('#save').show();
-    $('#productModal *').prop('disabled', false);
     clearSelect()
     $.ajax({
         url: "/api/product/create",
@@ -106,7 +105,7 @@ $('#save').on('click', function () {
     // for (var pair of formData.entries()) {
     //     console.log(pair[0] + ', ' + pair[1]);
     // }
-    $('#productModal *').prop('disabled', true);
+    // $('#productModal *').prop('disabled', true);
     $.ajax({
         url: "/api/product/store",
         type: "POST",
@@ -136,7 +135,7 @@ $('#save').on('click', function () {
         },
         error: function (error) {
             // alert("error");
-            $('#productModal *').prop('disabled', false);
+            // $('#productModal *').prop('disabled', false);
         },
     })
 })
@@ -278,53 +277,68 @@ $(document).on('click', 'button.delete', function () {
     });
 });
 
+$(function () {
+    $("#productForm").validate({
+        errorElement: "small",
+        rules: {
+            product_img: {
+                required: true,
+            },
+            product_name: {
+                required: true,
+                minlength: 2,
+            },
+            brand_id: {
+                required: true,
+            },
+            colorway: {
+                required: true,
+            },
+            type_id: {
+                required: true,
+            },
+            size: {
+                required: true,
+                number: true,
+            },
+            price: {
+                required: true,
+            },
+        },
+        messages: {
+            product_img: {
+                required: "Please select an image.",
+            },
+            product_name: {
+                required: "Please enter a product name.",
+                minlength: "Product name must be at least 2 characters.",
+            },
+            brand_id: {
+                required: "Please select a brand.",
+            },
+            colorway: {
+                required: "Please enter the colorway.",
+            },
+            type_id: {
+                required: "Please select a type.",
+            },
+            size: {
+                required: "Please enter a valid size.",
+                number: "Please enter a valid number for size.",
+            },
+            price: {
+                required: "Please enter the price.",
+            },
+        },
+        submitHandler: function (form) {
+        },
+    });
 
-document.addEventListener('DOMContentLoaded', function () {
-    const productForm = document.getElementById('productForm');
-    const updateBtn = document.getElementById('update');
-    const saveBtn = document.getElementById('save');
+    $("#save").click(function () {
+        $("#productForm").submit();
+    });
 
-    updateBtn.addEventListener('click', validateForm);
-    saveBtn.addEventListener('click', validateForm);
-
-    function validateForm() {
-        const productImgInput = document.getElementById('product_img');
-        const productNameInput = document.getElementById('product_name');
-        const brandSelect = document.getElementById('brandSelect');
-        const typeSelect = document.getElementById('typeSelect');
-        const sizeInput = document.getElementById('size');
-        const priceInput = document.getElementById('price');
-
-        if (productImgInput.files.length === 0) {
-            alert('Please select at least one image.');
-            return;
-        }
-
-        if (productNameInput.value.trim() === '') {
-            alert('Product Name field is required.');
-            return;
-        }
-
-        if (brandSelect.value === '') {
-            alert('Please select a Brand.');
-            return;
-        }
-
-        if (typeSelect.value === '') {
-            alert('Please select a Type.');
-            return;
-        }
-
-        if (isNaN(sizeInput.value) || Number(sizeInput.value) <= 0) {
-            alert('Please enter a valid Size.');
-            return;
-        }
-
-        if (isNaN(priceInput.value) || Number(priceInput.value) <= 0) {
-            alert('Please enter a valid Price.');
-            return;
-        }
-
-        productForm.submit();
-    }
+    $("#close").click(function (){
+        $("#productForm").find("small").remove();
+    });
 });

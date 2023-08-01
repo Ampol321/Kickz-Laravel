@@ -45,7 +45,6 @@ let dataTable = $('#brandsTable').DataTable({
 $('#create').on('click', function () {
     $('#update').hide();
     $('#save').show();
-    $('#brandModal *').prop('disabled', false);
     $.ajax({
         url: "/api/brand/create",
         type: "GET",
@@ -67,7 +66,6 @@ $('#save').on('click', function () {
     // for (var pair of formData.entries()) {
     //     console.log(pair[0] + ', ' + pair[1]);
     // }
-    $('#brandModal *').prop('disabled', true);
     $.ajax({
         url: "/api/brand/store",
         type: "POST",
@@ -97,7 +95,6 @@ $('#save').on('click', function () {
         },
         error: function (error) {
             // alert("error");
-            $('#brandModal *').prop('disabled', false);
         },
     })
 })
@@ -212,28 +209,36 @@ $(document).on('click', 'button.delete', function () {
     });
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    const brandForm = document.getElementById('brandForm');
-    const updateBtn = document.getElementById('update');
-    const saveBtn = document.getElementById('save');
+$(function () {
+    $("#brandForm").validate({
+        errorElement: "small",
+        rules: {
+            img_path: {
+                required: true,
+            },
+            brand_name: {
+                required: true,
+                minlength: 2,
+            },
+        },
+        messages: {
+            img_path: {
+                required: "Please select an image.",
+            },
+            brand_name: {
+                required: "Please enter a brand name.",
+                minlength: "Brand name must be at least 2 characters.",
+            },
+        },
+        submitHandler: function (form) {
+        },
+    });
 
-    updateBtn.addEventListener('click', validateForm);
-    saveBtn.addEventListener('click', validateForm);
+    $("#save").click(function () {
+        $("#brandForm").submit();
+    });
 
-    function validateForm() {
-        const brandImg = document.getElementById('img_path');
-        const brandName = document.getElementById('brand_name');
-
-        if (brandImg.files.length === 0) {
-            alert('Please select an image.');
-            return;
-        }
-
-        if (brandName.value.trim() === '') {
-            alert('Please enter a brand name.');
-            return;
-        }
-
-        brandForm.submit();
-    }
+    $("#close").click(function (){
+        $("#brandForm").find("small").remove();
+    });
 });

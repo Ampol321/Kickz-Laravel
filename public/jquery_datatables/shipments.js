@@ -45,7 +45,6 @@ let dataTable = $('#shipmentsTable').DataTable({
 $('#create').on('click', function () {
     $('#update').hide();
     $('#save').show();
-    $('#shipmentModal *').prop('disabled', false);
     $.ajax({
         url: "/api/shipment/create",
         type: "GET",
@@ -67,7 +66,6 @@ $('#save').on('click', function () {
     // for (var pair of formData.entries()) {
     //     console.log(pair[0] + ', ' + pair[1]);
     // }
-    $('#shipmentModal *').prop('disabled', true);
     $.ajax({
         url: "/api/shipment/store",
         type: "POST",
@@ -97,7 +95,6 @@ $('#save').on('click', function () {
         },
         error: function (error) {
             // alert("error");
-            $('#shipmentModal *').prop('disabled', false);
         },
     })
 })
@@ -213,34 +210,44 @@ $(document).on('click', 'button.delete', function () {
     });
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    const shipmentForm = document.getElementById('shipmentForm');
-    const updateBtn = document.getElementById('update');
-    const saveBtn = document.getElementById('save');
+$(function () {
+    $("#shipmentForm").validate({
+        errorElement: "small",
+        rules: {
+            shipment_img: {
+                required: true,
+            },
+            shipment_name: {
+                required: true,
+                minlength: 2,
+            },
+            shipment_cost: {
+                required: true,
+                number: true,
+            },
+        },
+        messages: {
+            shipment_img: {
+                required: "Please select an image.",
+            },
+            shipment_name: {
+                required: "Please enter a Shipment name.",
+                minlength: "Shipment name must be at least 2 characters.",
+            },
+            shipment_cost: {
+                required: "Please enter a Shipment cost.",
+                number: "Please enter a valid Shipment cost.",
+            },
+        },
+        submitHandler: function (form) {
+        },
+    });
 
-    updateBtn.addEventListener('click', validateForm);
-    saveBtn.addEventListener('click', validateForm);
+    $("#save").click(function () {
+        $("#shipmentForm").submit();
+    });
 
-    function validateForm() {
-        const shipmentImg = document.getElementById('shipment_img');
-        const shipmentName = document.getElementById('shipment_name');
-        const shipmentCost = document.getElementById('shipment_cost');
-
-        if (shipmentImg.files.length === 0) {
-            alert('Please select an image.');
-            return;
-        }
-
-        if (shipmentName.value.trim() === '') {
-            alert('Please enter a shipment name.');
-            return;
-        }
-
-        if (isNaN(shipmentCost.value) || Number(shipmentCost.value) <= 0) {
-            alert('Please enter a valid shipment cost.');
-            return;
-        }
-
-        shipmentForm.submit();
-    }
+    $("#close").click(function (){
+        $("#shipmentForm").find("small").remove();
+    });
 });

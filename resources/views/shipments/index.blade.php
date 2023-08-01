@@ -1,6 +1,10 @@
 @extends('layouts.tables')
 @extends('layouts.app')
 @section('content')
+    {{-- Form Validation --}}
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+    {{-- JQuery DataTables --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
@@ -109,8 +113,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="shipmentModalLongTitle">Shipments</h5>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#shipmentModal" class="close"
-                        data-dismiss="modal" aria-label="Close">
+                    <button id="close" type="button" data-bs-toggle="modal" data-bs-target="#shipmentModal"
+                        class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -121,7 +125,7 @@
 
                         <label>Image:</label></br>
                         <input type="file" name="shipment_img[]" multiple id="shipment_img" class="form-control"
-                            required>
+                            accept=".jpg, .jpeg, .png" required>
                         </br>
 
                         <div class="row">
@@ -139,7 +143,8 @@
                                 <input type="text" name="shipment_name" id="shipment_name" class="form-control" required>
                             </div>
                             <div class="col-4">
-                                <input type="text" name="shipment_cost" id="shipment_cost" class="form-control" required>
+                                <input type="text" name="shipment_cost" id="shipment_cost" class="form-control"
+                                    required>
                             </div>
                         </div>
                     </form>
