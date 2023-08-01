@@ -26,7 +26,8 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap4.min.css"
         integrity="sha512-PT0RvABaDhDQugEbpNMwgYBCnGCiTZMh9yOzUsJHDgl/dMhD9yjHAwoumnUk3JydV3QTcIkNDuN40CJxik5+WQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    {{-- <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet"> --}}
+    <link rel="stylesheet" href="/resources/demos/style.css">
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
@@ -89,6 +90,7 @@
                                 <span class="fa fa-search form-control-feedback"></span>
                                 <input class="form-control" type="search" id="search-text" placeholder="Search..."
                                     style="margin-right:10px">
+                                <div id="autocomplete-dropdown"></div>
                             </div>
                         </form>
 
@@ -170,48 +172,9 @@
             </div>
         </div>
 
-        <script>
-            $(document).ready(function() {
-                $('#search-text').on('input', function() {
-                    var searchTerm = $(this).val();
-                    if (searchTerm.trim() === '') {
-                        $('#search-results').empty();
-                    } else {
-                        $.ajax({
-                            url: '/api/search',
-                            type: 'GET',
-                            data: {
-                                term: searchTerm
-                            },
-                            success: function(data) {
-                                displaySearchResults(data);
-                            },
-                            error: function(error) {
-                                console.error('Error:', error);
-                            }
-                        });
-                    }
-                });
+        {{-- Script for search --}}
+        <script src="{{ asset('js/search.js') }}"></script>
 
-                function displaySearchResults(data) {
-                    $('#search-results').empty();
-                    $('#search-results').append(
-                        '<div class="text-center" style="margin-top:100px"><h1>Search</h1>There are ' + data
-                        .searchResults.length + ' results.</div>');
-                    data.searchResults.forEach(function(searchResult) {
-                        var resultHtml =
-                            '<div class="row">' +
-                            '<div class="col-md-12">' +
-                            '<h4 class="mb-1"><a href="' + searchResult.url + '">' + searchResult.title +
-                            '</a></h4>' +
-                            '<div class="font-13 text-success mb-3">' + searchResult.url + '</div>' +
-                            '</div>' +
-                            '</div><hr>';
-                        $('#search-results').append(resultHtml);
-                    });
-                }
-            });
-        </script>
         <main class="py-4"><br><br>
             @yield('content')
         </main>
