@@ -1,6 +1,6 @@
 <style>
     small {
-        color:red;
+        color: red;
     }
 
     th,
@@ -27,6 +27,4 @@
     .dataTables_wrapper .dataTable tbody td {
         vertical-align: middle;
     }
-
-    
 </style>

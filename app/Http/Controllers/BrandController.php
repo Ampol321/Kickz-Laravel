@@ -13,6 +13,16 @@ use App\Models\Brand;
 
 class BrandController extends Controller
 {
+    public function indexChart()
+    {
+        $brands = DB::table('products')
+            ->join('brands', 'brands.id', "=", 'products.brand_id')
+            ->groupBy('products.brand_id', 'brands.brand_name')
+            ->pluck(DB::raw('count(products.brand_id) as total'), 'brands.brand_name')
+            ->all();
+            
+        return response()->json($brands);
+    }
 
     public function index(BrandsDataTable $dataTable)
     {
@@ -49,8 +59,13 @@ class BrandController extends Controller
             "#AAAAAA",
         ]);
 
-        $brandChart->title("Shoe Count Based on Brand", 20, '#666', true,
-         "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif");
+        $brandChart->title(
+            "Shoe Count Based on Brand",
+            20,
+            '#666',
+            true,
+            "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
+        );
 
         $brandChart->options([
             'responsive' => true,
@@ -89,8 +104,9 @@ class BrandController extends Controller
         // return View::make('brands.index',compact('brands'));
     }
 
-    public function brandIndex(){
-        $brands=Brand::all();
+    public function brandIndex()
+    {
+        $brands = Brand::all();
         return response()->json($brands);
     }
 
@@ -123,7 +139,7 @@ class BrandController extends Controller
         Validator::make($request->all(), $rules, $messages)->validate();
 
         $brands = new brand;
-        
+
         $img_path = array();
         if ($request->hasFile('img_path')) {
             foreach ($request->file('img_path') as $file) {
@@ -161,7 +177,7 @@ class BrandController extends Controller
     {
         $brands = brand::find($id);
         // return View('brands.edit', compact('brands'))->with('message', 'Brand Edited');
-        return response()->json(['brand'=>$brands]);
+        return response()->json(['brand' => $brands]);
     }
 
     /**

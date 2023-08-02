@@ -4,6 +4,10 @@
     {{-- Form Validation --}}
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
+    {{-- Chart JS --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
     {{-- JQuery DataTables --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
@@ -40,14 +44,18 @@
             <div class="main-body">
                 <div class="row gutters-sm">
                     <div class="col-md-4 mb-3">
-                        @if (empty($paymentChart))
+                        {{-- @if (empty($paymentChart))
                             <div></div>
                         @else
                             <div style="padding:50px">
                                 {!! $paymentChart->container() !!}
                                 {!! $paymentChart->script() !!}
                             </div>
-                        @endif
+                        @endif --}}
+                        <h4 style="text-align: center">Payment Option Count</h4>
+                        <div class="container">
+                            <canvas id="paymentChart" style="height: 500px; padding: 20px"></canvas>
+                        </div>
                     </div>
 
                     <div class="col-md-8" style="padding:5px; border:2px solid #cecece;">

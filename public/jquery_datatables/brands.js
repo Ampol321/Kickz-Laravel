@@ -1,3 +1,56 @@
+const ctx = document.getElementById('brandChart');
+
+$.ajax({
+    url: '/api/brandChart',
+    type: 'GET',
+    dataType: "json",
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function (data) {
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(data),
+                datasets: [{
+                    data: Object.values(data),
+                    borderWidth: 1,
+                    borderColor: 'rgba(0, 0, 0, 1)',
+                    backgroundColor: [
+                        'rgba(0, 0, 0, 0.5)',
+                        'rgba(207, 141, 46, 0.5)',
+                        'rgba(248, 18, 26, 0.5)',
+                        'rgba(75, 192, 192, 0.5)',
+                        'rgba(54, 162, 235, 0.5)',
+                        'rgba(153, 102, 255, 0.5)',
+                        'rgba(201, 203, 207, 0.5)'
+                    ],
+                }]
+            },
+            plugins: [ChartDataLabels],
+            options: {
+                plugins: {
+                    datalabels: {
+                        color: 'black',
+                        labels: {
+                            title: {
+                                font: {
+                                    size: 15,
+                                },
+                            },
+                        }
+                    }
+                },
+                maintainAspectRatio: false,
+                responsive: true,
+            }
+        });
+    },
+    error: function () {
+
+    }
+})
+
 let dataTable = $('#brandsTable').DataTable({
     ajax: {
         url: '/api/brandTable',

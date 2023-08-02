@@ -16,6 +16,18 @@ use App\Models\Type;
 
 class ProductController extends Controller
 {
+    public function indexChart(){
+        $products = DB::table('orderitems')
+            ->orderBy('totalqty', 'DESC')
+            ->join('products', 'products.id', "=", 'orderitems.product_id')
+            ->groupBy('products.product_name')
+            ->pluck(DB::raw('sum(orderitems.quantity) as totalqty'), 'products.product_name')
+            ->take(5)
+            ->all();
+
+            return response()->json($products);
+    }
+
     public function index(ProductsDataTable $dataTable)
     {
         $products = DB::table('orderitems')
@@ -25,69 +37,69 @@ class ProductController extends Controller
             ->pluck(DB::raw('sum(orderitems.quantity) as totalqty'), 'products.product_name')
             ->all();
 
-        $productChart = new ProductChart();
-        $dataset = $productChart->labels(array_keys($products));
-        $dataset = $productChart->dataset(
-            'Sold Products',
-            'horizontalBar',
-            array_values($products)
-        );
+        // $productChart = new ProductChart();
+        // $dataset = $productChart->labels(array_keys($products));
+        // $dataset = $productChart->dataset(
+        //     'Sold Products',
+        //     'horizontalBar',
+        //     array_values($products)
+        // );
 
-        $dataset = $dataset->backgroundColor([
-            '#7158e2',
-            '#3ae374',
-            '#ff3838',
-            "#FF851B",
-            "#7FDBFF",
-            "#B10DC9",
-            "#FFDC00",
-            "#001f3f",
-            "#39CCCC",
-            "#01FF70",
-            "#85144b",
-            "#F012BE",
-            "#3D9970",
-            "#111111",
-            "#AAAAAA",
-        ]);
+        // $dataset = $dataset->backgroundColor([
+        //     '#7158e2',
+        //     '#3ae374',
+        //     '#ff3838',
+        //     "#FF851B",
+        //     "#7FDBFF",
+        //     "#B10DC9",
+        //     "#FFDC00",
+        //     "#001f3f",
+        //     "#39CCCC",
+        //     "#01FF70",
+        //     "#85144b",
+        //     "#F012BE",
+        //     "#3D9970",
+        //     "#111111",
+        //     "#AAAAAA",
+        // ]);
 
-        $productChart->title("Best Seller Shoe Products", 20, '#666', true,
-         "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif");
+        // $productChart->title("Best Seller Shoe Products", 20, '#666', true,
+        //  "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif");
 
-        $productChart->options([
-            'responsive' => true,
-            'legend' => ['display' => false],
-            'tooltips' => ['enabled' => true],
-            // 'maintainAspectRatio' =>true,
+        // $productChart->options([
+        //     'responsive' => true,
+        //     'legend' => ['display' => false],
+        //     'tooltips' => ['enabled' => true],
+        //     // 'maintainAspectRatio' =>true,
 
-            'title' => ["Best Seller Shoe Products" => true],
-            'aspectRatio' => 1,
-            'scales' => [
-                'yAxes' => [
-                    [
-                        'display' => true,
-                        'ticks' => ['beginAtZero' => true],
-                        'gridLines' => ['display' => false],
-                    ],
-                ],
-                'xAxes' => [
-                    [
-                        'categoryPercentage' => 0.8,
-                        //'barThickness' => 100,
-                        'barPercentage' => 1,
-                        'ticks' => ['beginAtZero' => false],
-                        'gridLines' => ['display' => false],
-                        'display' => false,
-                    ],
-                ],
-            ],
-            "plugins" => '{datalabels: { font: { weight: \'bold\',
-                size: 36 },
-                color: \'white\',
-            }}',
-        ]);
+        //     'title' => ["Best Seller Shoe Products" => true],
+        //     'aspectRatio' => 1,
+        //     'scales' => [
+        //         'yAxes' => [
+        //             [
+        //                 'display' => true,
+        //                 'ticks' => ['beginAtZero' => true],
+        //                 'gridLines' => ['display' => false],
+        //             ],
+        //         ],
+        //         'xAxes' => [
+        //             [
+        //                 'categoryPercentage' => 0.8,
+        //                 //'barThickness' => 100,
+        //                 'barPercentage' => 1,
+        //                 'ticks' => ['beginAtZero' => false],
+        //                 'gridLines' => ['display' => false],
+        //                 'display' => false,
+        //             ],
+        //         ],
+        //     ],
+        //     "plugins" => '{datalabels: { font: { weight: \'bold\',
+        //         size: 36 },
+        //         color: \'white\',
+        //     }}',
+        // ]);
 
-        return $dataTable->render('products.index', compact('productChart'));
+        return $dataTable->render('products.index', compact('products'));
     }
 
     public function productIndex(){

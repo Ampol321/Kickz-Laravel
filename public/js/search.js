@@ -40,28 +40,50 @@ $(document).ready(function () {
 });
 
 $(function () {
-    var products = [
-        "Nike Zoom Fly",
-        "Nike SB Dunk Lobsters",
-        "Nike Airforce 1",
-        "Jordan 4 Ama Maniére",
-        "Nike Airmax 97",
-        "Jordan 1 High",
-        "Adidas Foam Runners",
-        "Adidas Superstar",
-        "Adidas Stan Smith",
-        "Top Sneakers",
-        "Adidas Forum Low",
-        "Adidas Adifom",
-        "Authentic Checkered",
-        "Old Skool Highs",
-        "Old Skool Lows",
-        "Checkerboard",
-        "Vans Authentic",
-    ];
+    let products = [];
+    $.ajax({
+        url: "/api/productTable",
+        type: "get",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content'),
+        },
+        dataType: "json",
+        success: function (data) {
+            $.each(data, function (index, value) {
+                products.push(value.product_name)
+            })
+            console.log(products);
+
+        },
+        error: function () {
+            alert("sdad")
+        }
+
+    })
     $("#search-text").autocomplete({
         source: products,
         autoFocus: true,
         appendTo: "#autocomplete-dropdown",
     });
+    // var products = [
+
+    //     "Nike Zoom Fly",
+    //     "Nike SB Dunk Lobsters",
+    //     "Nike Airforce 1",
+    //     "Jordan 4 Ama Maniére",
+    //     "Nike Airmax 97",
+    //     "Jordan 1 High",
+    //     "Adidas Foam Runners",
+    //     "Adidas Superstar",
+    //     "Adidas Stan Smith",
+    //     "Top Sneakers",
+    //     "Adidas Forum Low",
+    //     "Adidas Adifom",
+    //     "Authentic Checkered",
+    //     "Old Skool Highs",
+    //     "Old Skool Lows",
+    //     "Checkerboard",
+    //     "Vans Authentic",
+    // ];
+
 });

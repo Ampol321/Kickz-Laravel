@@ -14,6 +14,16 @@ use App\Models\Shipment;
 
 class ShipmentController extends Controller
 {
+    public function indexChart(){
+        $shipments = DB::table('orders')
+            ->join('shipments', 'shipments.id', "=", 'orders.shipment_id')
+            ->groupBy('orders.shipment_id', 'shipments.shipment_name')
+            ->pluck(DB::raw('count(orders.shipment_id) as total'), 'shipments.shipment_name')
+            ->all();
+
+        return response()->json($shipments);
+    }
+
     public function index(ShipmentsDataTable $dataTable)
     {
         $shipments = DB::table('orders')

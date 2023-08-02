@@ -13,8 +13,17 @@ use App\Models\Payment;
 
 class PaymentController extends Controller
 {
-    public function index(PaymentsDataTable $dataTable)
-    {
+    public function indexChart(){
+        $payments = DB::table('orders')
+            ->join('payments', 'payments.id', "=", 'orders.payment_id')
+            ->groupBy('orders.payment_id', 'payments.payment_name')
+            ->pluck(DB::raw('count(orders.payment_id) as total'), 'payments.payment_name')
+            ->all();
+        
+        return response()->json($payments);
+    }
+
+    public function index(PaymentsDataTable $dataTable){
         $payments = DB::table('orders')
             ->join('payments', 'payments.id', "=", 'orders.payment_id')
             ->groupBy('orders.payment_id', 'payments.payment_name')

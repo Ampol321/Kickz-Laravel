@@ -1,3 +1,66 @@
+const ctx = document.getElementById('productChart');
+
+$.ajax({
+    url: '/api/productChart',
+    type: 'GET',
+    dataType: "json",
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function (data) {
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(data),
+                datasets: [{
+                    label: 'Best Seller Shoe Product',
+                    data: Object.values(data),
+                    borderColor: 'rgba(0, 0, 0, 1)',
+                    borderWidth: 1,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.5)',
+                        'rgba(255, 159, 64, 0.5)',
+                        'rgba(255, 205, 86, 0.5)',
+                        'rgba(75, 192, 192, 0.5)',
+                        'rgba(54, 162, 235, 0.5)',
+                        'rgba(153, 102, 255, 0.5)',
+                        'rgba(201, 203, 207, 0.5)'
+                    ],
+                }]
+            },
+            plugins: [ChartDataLabels],
+            options: {
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            display: false,
+                        },
+                    }
+                },
+                plugins: {
+                    datalabels: {
+                        color: 'black',
+                        labels: {
+                            title: {
+                                font: {
+                                    size: 15,
+                                },
+                            },
+                        }
+                    }
+                },
+            },
+
+
+        });
+    },
+    error: function () {
+
+    }
+})
+
 let dataTable = $('#productsTable').DataTable({
     ajax: {
         url: '/api/productTable',
@@ -303,6 +366,7 @@ $(function () {
             },
             price: {
                 required: true,
+                number: true,
             },
         },
         messages: {
@@ -328,6 +392,7 @@ $(function () {
             },
             price: {
                 required: "Please enter the price.",
+                number: "Please enter a valid price.",
             },
         },
         submitHandler: function (form) {
@@ -338,7 +403,7 @@ $(function () {
         $("#productForm").submit();
     });
 
-    $("#close").click(function (){
+    $("#close").click(function () {
         $("#productForm").find("small").remove();
     });
 });

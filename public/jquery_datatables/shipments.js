@@ -1,3 +1,64 @@
+const ctx = document.getElementById('shipmentChart');
+
+$.ajax({
+    url: '/api/shipmentChart',
+    type: 'GET',
+    dataType: "json",
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function (data) {
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(data),
+                datasets: [{
+                    label: 'Most Used Shipment',
+                    data: Object.values(data),
+                    borderWidth: 1,
+                    borderColor: 'rgba(0, 0, 0, 1)',
+                    backgroundColor: [
+                        'rgba(0, 123, 184, 0.5)',
+                        'rgba(211, 0, 0, 0.5)',
+                        'rgba(255, 223, 0, 0.5)',
+                        'rgba(75, 192, 192, 0.5)',
+                        'rgba(54, 162, 235, 0.5)',
+                        'rgba(153, 102, 255, 0.5)',
+                        'rgba(201, 203, 207, 0.5)'
+                    ],
+                }]
+            },
+            plugins: [ChartDataLabels],
+            options: {
+                scales: {
+                    y: {
+                        ticks: {
+                            display: false,
+                        },
+                    }
+                },
+                plugins: {
+                    datalabels: {
+                        color: 'black',
+                        labels: {
+                            title: {
+                                font: {
+                                    size: 15,
+                                },
+                            },
+                        }
+                    }
+                },
+                maintainAspectRatio: false,
+                responsive: true,
+            }
+        });
+    },
+    error: function () {
+
+    }
+})
+
 let dataTable = $('#shipmentsTable').DataTable({
     ajax: {
         url: '/api/shipmentTable',
@@ -53,7 +114,7 @@ $('#create').on('click', function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function (data) {
-            $('#shipmentForm').trigger('reset')     
+            $('#shipmentForm').trigger('reset')
         },
         error: function (error) {
             alert("error");
@@ -105,7 +166,7 @@ $(document).on('click', 'button.edit', function () {
     $('input[name="document[]"]').remove();
 
     let id = $(this).attr('data-id');
-    $('#update').attr('data-id',id);
+    $('#update').attr('data-id', id);
     $.ajax({
         url: `/api/shipment/edit/${id}`,
         type: "GET",
@@ -114,7 +175,7 @@ $(document).on('click', 'button.edit', function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function (data) {
-            $('#shipment_name').val(data.shipment.shipment_name);  
+            $('#shipment_name').val(data.shipment.shipment_name);
             $('#shipment_cost').val(data.shipment.shipment_cost);
         },
         error: function (error) {
@@ -194,7 +255,7 @@ $(document).on('click', 'button.delete', function () {
                         $('.alert').fadeOut(5000, function () {
                             $(this).remove();
                         });
-                        $(`td:contains(${id})`).closest('tr').fadeOut(5000, function(){
+                        $(`td:contains(${id})`).closest('tr').fadeOut(5000, function () {
                             $(this).remove();
                         });
                     },
@@ -203,7 +264,7 @@ $(document).on('click', 'button.delete', function () {
                     }
                 })
             },
-            
+
             cancel: function () {
             },
         }
@@ -247,7 +308,7 @@ $(function () {
         $("#shipmentForm").submit();
     });
 
-    $("#close").click(function (){
+    $("#close").click(function () {
         $("#shipmentForm").find("small").remove();
     });
 });

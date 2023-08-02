@@ -1,3 +1,56 @@
+const ctx = document.getElementById('paymentChart');
+
+$.ajax({
+    url: '/api/paymentChart',
+    type: 'GET',
+    dataType: "json",
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function (data) {
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(data),
+                datasets: [{
+                    data: Object.values(data),
+                    borderWidth: 1,
+                    borderColor: 'rgba(0, 0, 0, 1)',
+                    backgroundColor: [
+                        'rgba(79, 121, 66, 0.5)',
+                        'rgba(18, 96, 204, 0.5)',
+                        'rgba(41, 197, 246, 0.5)',
+                        'rgba(75, 192, 192, 0.5)',
+                        'rgba(54, 162, 235, 0.5)',
+                        'rgba(153, 102, 255, 0.5)',
+                        'rgba(201, 203, 207, 0.5)'
+                    ],
+                }]
+            },
+            plugins: [ChartDataLabels],
+            options: {
+                plugins: {
+                    datalabels: {
+                        color: 'black',
+                        labels: {
+                            title: {
+                                font: {
+                                    size: 15,
+                                },
+                            },
+                        }
+                    }
+                },
+                maintainAspectRatio: false,
+                responsive: true,
+            }
+        });
+    },
+    error: function () {
+
+    }
+})
+
 let dataTable = $('#paymentsTable').DataTable({
     ajax: {
         url: '/api/paymentTable',
@@ -236,7 +289,7 @@ $(function () {
         $("#paymentForm").submit();
     });
 
-    $("#close").click(function (){
+    $("#close").click(function () {
         $("#paymentForm").find("small").remove();
     });
 });

@@ -4,6 +4,10 @@
     {{-- Form Validation --}}
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
+    {{-- Chart JS --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
     {{-- JQuery DataTables --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
@@ -36,13 +40,17 @@
                 class="btn btn-success btn-sm" data-bs-target="#productModal"> Add Product </a>
         </center></br>
 
-        <div class="container" style="width: 1000px;">
+        {{-- <div class="container" style="width: 1000px;">
             @if (empty($productChart))
                 <div></div>
             @else
                 <div>{!! $productChart->container() !!}</div>
                 {!! $productChart->script() !!}
             @endif
+        </div></br> --}}
+        <h4 style="text-align: center">Top 5 Best Selling Shoes</h4>
+        <div class="container" style="width: 1000px;">
+            <canvas id="productChart"></canvas>
         </div></br>
 
         <div class="container" style="width: 1100px; padding:5px; border:2px solid #cecece;">
