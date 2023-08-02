@@ -64,5 +64,5 @@
         {{ $products->links() }}
     </div>
     
-    <script src="{{ asset('jquery_datatables/home.js') }}"></script>
+    <script src="{{ asset('js/home.js') }}"></script>
 @endsection
