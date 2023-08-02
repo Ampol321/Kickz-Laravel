@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\Debugbar\Facades\Debugbar;
+use App\Imports\ProductsImport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
@@ -16,7 +19,8 @@ use App\Models\Type;
 
 class ProductController extends Controller
 {
-    public function indexChart(){
+    public function indexChart()
+    {
         $products = DB::table('orderitems')
             ->orderBy('totalqty', 'DESC')
             ->join('products', 'products.id', "=", 'orderitems.product_id')
@@ -25,7 +29,7 @@ class ProductController extends Controller
             ->take(5)
             ->all();
 
-            return response()->json($products);
+        return response()->json($products);
     }
 
     public function index(ProductsDataTable $dataTable)
@@ -102,14 +106,16 @@ class ProductController extends Controller
         return $dataTable->render('products.index', compact('products'));
     }
 
-    public function productIndex(){
+    public function productIndex()
+    {
         $products = Product::with(['brand', 'type', 'stock'])
-        ->get();
-        
+            ->get();
+
         return response()->json($products);
     }
 
-    public function home(){
+    public function home()
+    {
         $products = DB::table('products')
             ->join('brands', 'brands.id', "=", 'products.brand_id')
             ->join('types', 'types.id', "=", 'products.type_id')
@@ -127,7 +133,7 @@ class ProductController extends Controller
     {
         $brands = brand::all();
         $types = type::all();
-        return response()->json(['brands'=>$brands,'types'=>$types]);
+        return response()->json(['brands' => $brands, 'types' => $types]);
     }
 
     /**
@@ -233,7 +239,7 @@ class ProductController extends Controller
         // $products = product::find($id);
 
         // return View('products.edit', compact('products', 'brands', 'types', 'stocks'))->with('message', 'Products Edited');
-        return response()->json(['product'=>$products,'brands'=>$brands,'types'=>$types,'stocks'=>$stocks]);
+        return response()->json(['product' => $products, 'brands' => $brands, 'types' => $types, 'stocks' => $stocks]);
     }
 
     /**
@@ -302,6 +308,13 @@ class ProductController extends Controller
     {
         product::destroy($id);
         // return back()->with('message', 'Product Deleted');
+        return response()->json([]);
+    }
+
+    public function import(Request $request)
+    {
+        Debugbar::info($request);
+        Excel::import(new ProductsImport, $request->importFile);
         return response()->json([]);
     }
 }

@@ -9,5 +9,5 @@ class Payment extends Model
 {
     use HasFactory;
     public $timestamps = false;
-
+    public $fillable = ["payment_img", "payment_name"];
 }

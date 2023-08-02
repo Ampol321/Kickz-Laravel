@@ -312,3 +312,56 @@ $(function () {
         $("#shipmentForm").find("small").remove();
     });
 });
+
+$('#import').on('click', function () {
+
+    let formData = new FormData($('#importForm')[0]);
+
+    $.ajax({
+        url: '/api/shipment/import',
+        type: "POST",
+        contentType: false,
+        processData: false,
+        data: formData,
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (data) {
+            dataTable.ajax.reload()
+            $('#importModal').modal('hide');
+            $('#buttonClose').trigger('click');
+            $('#importForm').trigger('reset');
+            $('.for-alert').prepend(`
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Successfully Imported!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            `);
+            $('.alert').fadeOut(5000, function () {
+                $(this).remove();
+            });
+        },
+        error: function () {
+            $('#importForm').trigger('reset');
+            $('#importModal').modal("hide");
+            $('.for-alert').prepend(`
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    Please Import Excel Only
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            `);
+            $('.alert').fadeOut(5000, function () {
+                $(this).remove();
+            });
+        }
+    })
+})
+$("#importFile").on("change", function (e) {
+    let filename = e.target.files[0].name;
+    $('#labelFile').html(filename);
+})

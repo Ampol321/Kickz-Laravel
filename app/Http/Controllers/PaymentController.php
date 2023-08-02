@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\Debugbar\Facades\Debugbar;
+use App\Imports\PaymentsImport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
@@ -13,17 +16,19 @@ use App\Models\Payment;
 
 class PaymentController extends Controller
 {
-    public function indexChart(){
+    public function indexChart()
+    {
         $payments = DB::table('orders')
             ->join('payments', 'payments.id', "=", 'orders.payment_id')
             ->groupBy('orders.payment_id', 'payments.payment_name')
             ->pluck(DB::raw('count(orders.payment_id) as total'), 'payments.payment_name')
             ->all();
-        
+
         return response()->json($payments);
     }
 
-    public function index(PaymentsDataTable $dataTable){
+    public function index(PaymentsDataTable $dataTable)
+    {
         $payments = DB::table('orders')
             ->join('payments', 'payments.id', "=", 'orders.payment_id')
             ->groupBy('orders.payment_id', 'payments.payment_name')
@@ -56,8 +61,13 @@ class PaymentController extends Controller
             "#AAAAAA",
         ]);
 
-        $paymentChart->title("Most Used Payment Options", 20, '#666', true,
-         "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif");
+        $paymentChart->title(
+            "Most Used Payment Options",
+            20,
+            '#666',
+            true,
+            "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
+        );
 
         $paymentChart->options([
             'responsive' => true,
@@ -94,11 +104,12 @@ class PaymentController extends Controller
 
         // $payments = payment::all();
         // return $dataTable->render('payments.index', compact('payments'));
-        return $dataTable->render('payments.index',compact('paymentChart'));
+        return $dataTable->render('payments.index', compact('paymentChart'));
     }
 
-    public function paymentIndex(){
-        $payments=Payment::all();
+    public function paymentIndex()
+    {
+        $payments = Payment::all();
         return response()->json($payments);
     }
 
@@ -172,7 +183,7 @@ class PaymentController extends Controller
     {
         $payments = payment::find($id);
         // return View::make('payments.edit', compact('payments'))->with('message', 'Payment Edited');
-        return response()->json(['payment'=>$payments]);
+        return response()->json(['payment' => $payments]);
     }
 
     /**
@@ -235,4 +246,10 @@ class PaymentController extends Controller
         // return back()->with('message', 'Payment Deleted');
         return response()->json([]);
     }
+
+    public function import(Request $request){
+        Debugbar::info($request);
+        Excel::import(new PaymentsImport, $request->importFile);
+        return response()->json([]);
+     }
 }

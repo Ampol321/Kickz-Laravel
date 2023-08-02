@@ -34,6 +34,7 @@ Route::post('/product/store', [ProductController::class, 'store']);
 Route::get('/product/edit/{id}', [ProductController::class, 'edit']);
 Route::put('/product/update/{id}', [ProductController::class, 'update']);
 Route::delete('/product/delete/{id}', [ProductController::class, 'destroy']);
+Route::post('/product/import', [ProductController::class, 'import']);
 
 Route::get('/shipmentChart', [ShipmentController::class, 'indexChart']);
 Route::get('/shipmentTable', [ShipmentController::class, 'shipmentIndex']);
@@ -42,6 +43,7 @@ Route::post('/shipment/store', [ShipmentController::class, 'store']);
 Route::get('/shipment/edit/{id}', [ShipmentController::class, 'edit']);
 Route::put('/shipment/update/{id}', [ShipmentController::class, 'update']);
 Route::delete('/shipment/delete/{id}', [ShipmentController::class, 'destroy']);
+Route::post('/shipment/import', [ShipmentController::class, 'import']);
 
 Route::get('/paymentChart', [PaymentController::class, 'indexChart']);
 Route::get('/paymentTable', [PaymentController::class, 'paymentIndex']);
@@ -50,6 +52,7 @@ Route::post('/payment/store', [PaymentController::class, 'store']);
 Route::get('/payment/edit/{id}', [PaymentController::class, 'edit']);
 Route::put('/payment/update/{id}', [PaymentController::class, 'update']);
 Route::delete('/payment/delete/{id}', [PaymentController::class, 'destroy']);
+Route::post('/payment/import', [PaymentController::class, 'import']);
 
 Route::get('/brandChart', [BrandController::class, 'indexChart']);
 Route::get('/brandTable', [BrandController::class, 'brandIndex']);
@@ -58,3 +61,4 @@ Route::post('/brand/store', [BrandController::class, 'store']);
 Route::get('/brand/edit/{id}', [BrandController::class, 'edit']);
 Route::put('/brand/update/{id}', [BrandController::class, 'update']);
 Route::delete('/brand/delete/{id}', [BrandController::class, 'destroy']);
+Route::post('/brand/import', [BrandController::class, 'import']);

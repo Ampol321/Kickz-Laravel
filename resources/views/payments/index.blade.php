@@ -38,6 +38,8 @@
                 Stored Images</button>
             <button {{-- href="{{ url('/payment/create') }}" --}} id="create" type="button" data-bs-toggle="modal"
                 class="btn btn-success btn-sm" data-bs-target="#paymentModal"> Add Payment </button>
+            <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#importModal">
+                Import Payments</button>
         </center></br>
 
         <div class="container">
@@ -143,6 +145,38 @@
                 <div class="modal-footer">
                     <button id="update" type="button" class="btn btn-dark" data-dismiss="modal">Update</button>
                     <button id="save" type="button" class="btn btn-success">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal for Import --}}
+    <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importModalLongTitle">Payment Import</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="buttonClose">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="importForm" method="post" enctype="multipart/form-data">
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="importFile" name="importFile"
+                                    style="cursor: pointer">
+                                <label class="custom-file-label" for="inputGroupFile04" id="labelFile"
+                                    style="cursor: pointer">Choose file</label>
+                            </div>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" id="import">Import</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
                 </div>
             </div>
         </div>

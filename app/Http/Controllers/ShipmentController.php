@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\Debugbar\Facades\Debugbar;
+use App\Imports\ShipmentsImport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
@@ -14,7 +17,8 @@ use App\Models\Shipment;
 
 class ShipmentController extends Controller
 {
-    public function indexChart(){
+    public function indexChart()
+    {
         $shipments = DB::table('orders')
             ->join('shipments', 'shipments.id', "=", 'orders.shipment_id')
             ->groupBy('orders.shipment_id', 'shipments.shipment_name')
@@ -59,8 +63,13 @@ class ShipmentController extends Controller
             "#AAAAAA",
         ]);
 
-        $shipmentChart->title("Most Used Shipping Options", 20, '#666', true,
-         "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif");
+        $shipmentChart->title(
+            "Most Used Shipping Options",
+            20,
+            '#666',
+            true,
+            "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
+        );
 
         $shipmentChart->options([
             'responsive' => true,
@@ -94,12 +103,13 @@ class ShipmentController extends Controller
                 color: \'white\',
             }}',
         ]);
-        return $dataTable->render('shipments.index',compact('shipmentChart'));
+        return $dataTable->render('shipments.index', compact('shipmentChart'));
         // return View::make('shipments.index',compact('shipments'));
     }
 
-    public function shipmentIndex(){
-        $shipments=Shipment::all();
+    public function shipmentIndex()
+    {
+        $shipments = Shipment::all();
         return response()->json($shipments);
     }
 
@@ -179,7 +189,7 @@ class ShipmentController extends Controller
     {
         $shipments = shipment::find($id);
         // return View::make('shipments.edit', compact('shipments'))->with('message', 'Shipment Edited');
-        return response()->json(['shipment'=>$shipments]);
+        return response()->json(['shipment' => $shipments]);
     }
 
     /**
@@ -231,6 +241,13 @@ class ShipmentController extends Controller
     {
         shipment::destroy($id);
         // return back()->with('message', 'Shipment Deleted');
+        return response()->json([]);
+    }
+
+    public function import(Request $request)
+    {
+        Debugbar::info($request);
+        Excel::import(new ShipmentsImport, $request->importFile);
         return response()->json([]);
     }
 }

@@ -65,33 +65,33 @@ let dataTable = $('#brandsTable').DataTable({
         'csvHtml5',
         'pdfHtml5'
     ],
-    columns: [    
-    {
-        data: 'id'
-    },
-    
-    {
-        data: null,
-        render: function (data) {
-            return `<img src="${data.img_path}" width="100" height="100" />`;
-        }
-    },
+    columns: [
+        {
+            data: 'id'
+        },
 
-    {
-        data: 'brand_name'
-    },
+        {
+            data: null,
+            render: function (data) {
+                return `<img src="${data.img_path}" width="100" height="100" />`;
+            }
+        },
 
-    {
-        data: null,
-        render: function (data) {
-            return `<button type="button" data-bs-toggle="modal" data-bs-target="#brandModal" data-id="${data.id}" class="btn btn-primary edit">
+        {
+            data: 'brand_name'
+        },
+
+        {
+            data: null,
+            render: function (data) {
+                return `<button type="button" data-bs-toggle="modal" data-bs-target="#brandModal" data-id="${data.id}" class="btn btn-primary edit">
                     <i class="fas fa-edit"></i>
                 </button>
                 <button type="button" data-id="${data.id}" class="btn btn-danger btn-delete delete">
                     <i class="fas fa-trash" style="color:white"></i>
                 </button>`;
+            }
         }
-    }
     ]
 });
 
@@ -106,7 +106,7 @@ $('#create').on('click', function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function (data) {
-            $('#brandForm').trigger('reset')     
+            $('#brandForm').trigger('reset')
         },
         error: function (error) {
             alert("error");
@@ -158,7 +158,7 @@ $(document).on('click', 'button.edit', function () {
     $('input[name="document[]"]').remove();
 
     let id = $(this).attr('data-id');
-    $('#update').attr('data-id',id);
+    $('#update').attr('data-id', id);
     $.ajax({
         url: `/api/brand/edit/${id}`,
         type: "GET",
@@ -167,7 +167,7 @@ $(document).on('click', 'button.edit', function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function (data) {
-            $('#brand_name').val(data.brand.brand_name);  
+            $('#brand_name').val(data.brand.brand_name);
         },
         error: function (error) {
             alert("error");
@@ -246,7 +246,7 @@ $(document).on('click', 'button.delete', function () {
                         $('.alert').fadeOut(5000, function () {
                             $(this).remove();
                         });
-                        $(`td:contains(${id})`).closest('tr').fadeOut(5000, function(){
+                        $(`td:contains(${id})`).closest('tr').fadeOut(5000, function () {
                             $(this).remove();
                         });
                     },
@@ -255,7 +255,7 @@ $(document).on('click', 'button.delete', function () {
                     }
                 })
             },
-            
+
             cancel: function () {
             },
         }
@@ -291,7 +291,61 @@ $(function () {
         $("#brandForm").submit();
     });
 
-    $("#close").click(function (){
+    $("#close").click(function () {
         $("#brandForm").find("small").remove();
     });
 });
+
+$('#import').on('click', function () {
+
+    let formData = new FormData($('#importForm')[0]);
+
+    $.ajax({
+        url: '/api/brand/import',
+        type: "POST",
+        contentType: false,
+        processData: false,
+        data: formData,
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (data) {
+            dataTable.ajax.reload()
+            $('#importModal').modal('hide');
+            $('#buttonClose').trigger('click');
+            $('#importForm').trigger('reset');
+            $('.for-alert').prepend(
+                `<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Successfully Imported!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            `);
+            $('.alert').fadeOut(5000, function () {
+                $(this).remove();
+            });
+        },
+        error: function () {
+            $('#importForm').trigger('reset');
+            $('#importModal').modal("hide");
+            $('.for-alert').prepend(`
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    Please Import Excel Only
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            `);
+            $('.alert').fadeOut(5000, function () {
+                $(this).remove();
+            });
+        }
+    })
+})
+
+$("#importFile").on("change", function (e) {
+    let filename = e.target.files[0].name;
+    $('#labelFile').html(filename);
+})

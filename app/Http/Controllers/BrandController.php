@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\Debugbar\Facades\Debugbar;
+use App\Imports\BrandsImport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
@@ -20,7 +23,7 @@ class BrandController extends Controller
             ->groupBy('products.brand_id', 'brands.brand_name')
             ->pluck(DB::raw('count(products.brand_id) as total'), 'brands.brand_name')
             ->all();
-            
+
         return response()->json($brands);
     }
 
@@ -226,6 +229,14 @@ class BrandController extends Controller
     {
         brand::destroy($id);
         // return back()->with('message', 'Brand Deleted');
+        return response()->json([]);
+    }
+
+    public function import(Request $request)
+    {
+        Debugbar::info($request);
+        Excel::import(new BrandsImport, $request->importFile);
+        
         return response()->json([]);
     }
 }
