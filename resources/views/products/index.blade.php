@@ -222,7 +222,7 @@
                         <div class="input-group">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="importFile" name="importFile"
-                                    style="cursor: pointer">
+                                    style="cursor: pointer" accept=".xlsx">
                                 <label class="custom-file-label" for="inputGroupFile04" id="labelFile"
                                     style="cursor: pointer">Choose file</label>
                             </div>

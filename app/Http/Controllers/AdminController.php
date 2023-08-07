@@ -61,6 +61,19 @@ class AdminController extends Controller
         }
     }
 
+    public function salesChart(){
+        $chartsales = DB::table('orders')
+            ->join('orderitems', 'orderitems.order_id', '=', 'orders.id')
+            ->orderBy(DB::raw('month(orders.date_shipped)'), 'ASC')
+            ->where('status', 'Delivered')
+            ->groupBy('month')
+            ->pluck(DB::raw('sum(orderitems.price) as total'),
+                    DB::raw('monthname(orders.date_shipped) as month'))
+            ->all();
+
+        return response()->json($chartsales);
+    }
+
     public function sales()
     {
         $orders = DB::table('orders')

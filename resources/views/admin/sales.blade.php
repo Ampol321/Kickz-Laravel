@@ -1,17 +1,25 @@
 @extends('layouts.tables')
 @extends('layouts.app')
 @section('content')
+    {{-- Chart JS --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
     <center>
         <h1><b>Kickz Sales</b></h1>
-    </center></br>
+    </center>
 
-    <div class="container" style="width: 1000px;">
+    {{-- <div class="container" style="width: 1000px;">
         @if (empty($salesChart))
             <div></div>
         @else
             <div>{!! $salesChart->container() !!}</div>
             {!! $salesChart->script() !!}
         @endif
+    </div></br> --}}
+
+    <div class="container" style="width: 1000px;">
+        <canvas id="salesChart"></canvas>
     </div></br>
 
     <div class="d-flex justify-content-center">
@@ -29,9 +37,9 @@
             </div>
             <div class="row mt-3">
                 <div class="col d-flex justify-content-center">
-                  <button type="submit" class="btn btn-dark btn-sm">Search</button>
+                    <button type="submit" class="btn btn-dark btn-sm">Search</button>
                 </div>
-              </div>
+            </div>
         </form>
     </div><br>
 
@@ -75,4 +83,5 @@
             <h3>Total Sales: ₱ {{ $total }}</h3>
         </div>
     </div>
+    <script src="{{ asset('js/sales.js') }}"></script>
 @endsection

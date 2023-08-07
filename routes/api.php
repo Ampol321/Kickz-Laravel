@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ProductController;
@@ -64,3 +65,5 @@ Route::get('/brand/edit/{id}', [BrandController::class, 'edit']);
 Route::put('/brand/update/{id}', [BrandController::class, 'update']);
 Route::delete('/brand/delete/{id}', [BrandController::class, 'destroy']);
 Route::post('/brand/import', [BrandController::class, 'import']);
+
+Route::get('/salesChart', [AdminController::class, 'salesChart']);

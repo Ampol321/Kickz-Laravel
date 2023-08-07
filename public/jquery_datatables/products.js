@@ -410,6 +410,19 @@ $(function () {
 
 $('#import').on('click', function () {
 
+    // $("#importForm").validate({
+    //     errorElement: "small",
+    //     rules: {
+
+    //     },
+    //     messages: {
+
+    //     },
+    //     submitHandler: function (form) {
+    //     },
+    // });
+
+
     let formData = new FormData($('#importForm')[0]);
 
     $.ajax({
