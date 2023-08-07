@@ -13,8 +13,8 @@ class Order extends Model
 {
     use HasFactory;
     public $timestamps = false;
-
-    protected $fillable = ['id','user_id','shipment_id',
+    protected $primaryKey = 'id';
+    protected $fillable = ['user_id','shipment_id',
                             'payment_id','credit_card','shipping_address','status',
                             'date_ordered','date_shipped'];
 
@@ -30,4 +30,7 @@ class Order extends Model
         return $this->belongsTo(Payment::class, 'payment_id', 'id');
     }
 
+    public function products(){
+        return $this->belongsToMany(Product::class, 'orderitems', 'order_id', 'product_id')->withPivot('quantity','price');
+    }
 }

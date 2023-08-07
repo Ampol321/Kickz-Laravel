@@ -38,6 +38,7 @@ class CartController extends Controller
                     ]);
 
                 return redirect()->back()->with('message', 'Product Added to Cart!');
+                // return response()->json();
             } else {
                 $user = auth()->user();
                 $products = product::find($id);
@@ -50,6 +51,7 @@ class CartController extends Controller
                 $cart->save();
 
                 return redirect()->back()->with('message', 'Product Added to Cart!');
+                // return response()->json();
             }
         } else {
             return redirect('login');
@@ -67,6 +69,9 @@ class CartController extends Controller
             ->select('carts.*', 'products.product_img', 'products.product_name')
             ->where('user_id', $id)
             ->get();
+        // $cart = Cart::with(['user','product'])
+        // ->where('user_id', $id)
+        // ->get();
 
         foreach ($cart as $carts) {
             $totalprice += $carts->price;
@@ -156,6 +161,11 @@ class CartController extends Controller
                 'quantity' => $carts->quantity,
                 'price' => $carts->price
             ]);
+            // $order->products()->attach($carts->product_id, [
+            //     'user_id' => $user,
+            //     'quantity' => $carts->quantity,
+            //     'price' => $carts->price
+            // ]);
             $order->save();
 
             $stocks = stock::where('product_id', $carts->product_id)->first();

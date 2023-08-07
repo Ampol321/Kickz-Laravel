@@ -11,6 +11,8 @@ use \Spatie\Searchable\SearchableTrait;
 use App\Models\Brand;
 use App\Models\Type;
 use App\Models\Stock;
+use App\Models\Cart;
+use App\Models\Order;
 
 class Product extends Model implements Searchable
 // class Product extends Model
@@ -22,6 +24,10 @@ class Product extends Model implements Searchable
     protected $fillable = ['product_img','product_name','colorway',
                             'size','price','brand_id','type_id'];
 
+    public function orders(){
+        return $this->belongsToMany(Order::class,'ordeitems','product_id','order_id')->withPivot('quantity','price');
+    }
+    
     public function brand(){
         return $this->belongsTo(Brand::class, 'brand_id', 'id');
     }

@@ -10,5 +10,6 @@ class Cart extends Model
 {
     use HasFactory;
     public $timestamps = false;
+    public $fillable = ["quantity", "price"];
     // use SoftDeletes;
 }
