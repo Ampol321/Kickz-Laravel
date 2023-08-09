@@ -23,10 +23,6 @@ class Product extends Model implements Searchable
     protected $primaryKey = 'id';
     protected $fillable = ['product_img','product_name','colorway',
                             'size','price','brand_id','type_id'];
-
-    public function orders(){
-        return $this->belongsToMany(Order::class,'ordeitems','product_id','order_id')->withPivot('quantity','price');
-    }
     
     public function brand(){
         return $this->belongsTo(Brand::class, 'brand_id', 'id');
@@ -38,6 +34,11 @@ class Product extends Model implements Searchable
 
     public function stock(){
         return $this->hasOne(Stock::class, 'product_id', 'id');
+    }
+
+    public function orders(){
+        return $this->belongsToMany(Order::class, 'orderitems')
+            ->withPivot('user_id', 'quantity', 'price');
     }
 
     public function getSearchResult(): SearchResult

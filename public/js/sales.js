@@ -25,8 +25,8 @@ $.ajax({
                     tension: {
                         duration: 1000,
                         easing: 'linear',
-                        from: 1,
-                        to: 0,
+                        from: 0,
+                        to: 1,
                         loop: true
                     }
                 },

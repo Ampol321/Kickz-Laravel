@@ -151,22 +151,27 @@ class CartController extends Controller
             'date_ordered' => now(),
             'date_shipped' => null,
         ]);
+        $order->save();
 
         foreach ($cart as $carts) {
-            $orderitem = new Orderitem;
-            $orderitem = Orderitem::insert([
-                'order_id' => $order->id,
-                'user_id' => $order->user_id,
-                'product_id' => $carts->product_id,
-                'quantity' => $carts->quantity,
-                'price' => $carts->price
-            ]);
-            // $order->products()->attach($carts->product_id, [
+            // $orderitem = new Orderitem;
+            // $orderitem = Orderitem::insert([
+            //     'order_id' => $order->id,
+            //     'user_id' => $order->user_id,
+            //     'product_id' => $carts->product_id,
+            //     'quantity' => $carts->quantity,
+            //     'price' => $carts->price
+            // ]);
+            // $orderitem->orders()->products()->attach($carts->product_id, [
             //     'user_id' => $user,
             //     'quantity' => $carts->quantity,
             //     'price' => $carts->price
             // ]);
-            $order->save();
+            $order->products()->attach($carts->product_id, [
+                'user_id' => $user,
+                'quantity' => $carts->quantity,
+                'price' => $carts->price
+            ]);
 
             $stocks = stock::where('product_id', $carts->product_id)->first();
             stock::where('product_id', $carts->product_id)->update([
