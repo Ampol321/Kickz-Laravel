@@ -77,7 +77,15 @@ class CartController extends Controller
             $totalprice += $carts->price;
         }
 
+        // $data = [
+        //     'cart' => $cart,
+        //     'totalprice' => $totalprice,
+        //     'shipments' => $shipments,
+        //     'payments' => $payments,
+        // ];
+
         return View::make('users.shoppingcart', compact('cart', 'totalprice', 'shipments', 'payments'));
+        // return response()->json($data);
     }
 
     public function increment($id)
@@ -94,6 +102,8 @@ class CartController extends Controller
             ]);
 
         return back();
+        // return response()->json(['quantity' => $cart->quantity,
+        // 'price' => $cart->price]);
     }
 
     public function decrement($id)
@@ -112,6 +122,8 @@ class CartController extends Controller
                 ]);
         }
         return back();
+        // return response()->json(['quantity' => $cart->quantity,
+        // 'price' => $cart->price]);
     }
 
     public function checkout(Request $request)

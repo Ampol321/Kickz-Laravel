@@ -1,3 +1,50 @@
+// let dataTable = $('#cartsTable').DataTable({
+//     ajax: {
+//         url: `/api/cartTable/${id}`,
+//         dataSrc: ''
+//     },
+//     responsive: true,
+//     autoWidth: false,
+//     dom: 'Bfrtip',
+//     buttons: [
+//         'copyHtml5',
+//         'excelHtml5',
+//         'csvHtml5',
+//         'pdfHtml5'
+//     ],
+//     columns: [
+//     {
+//         data: null,
+//         render: function (data) {
+//             return `<img src="${data.product_img}" width="100" height="100" />`;
+//         }
+//     },
+//     {
+//         data: 'product.product_name'
+//     },
+//     {
+//         data: ['product_id','quantity'],
+//         render: function (data) {
+//             return `<button class="btn btn-success btn-sm increment"
+//             data-id="${ data.product_id }">+</button>
+//             &nbsp;&nbsp;${ data }&nbsp;&nbsp;
+//             <button class="btn btn-danger btn-sm decrement"
+//             data-id="${ data.product_id }">-</button>`;
+//         }
+//     },
+//     {
+//         data: 'price'
+//     },
+//     {
+//         data: null,
+//         render: function (data) {
+//             return `<button type="button" data-id="${data.id}" class="btn btn-danger btn-delete delete">
+//                     <i class="fas fa-trash" style="color:white"></i>
+//                 </button>`;
+//         }
+//     }
+//     ]
+// });
 
 document.getElementById("shipment").addEventListener("change", function () {
     if (this.value === "1") {
@@ -27,3 +74,47 @@ document.getElementById("mySelect").addEventListener("change", function () {
 $('.alert').fadeOut(5000, function () {
     $(this).remove();
 });
+
+// $(document).on('click', '.increment', function (e) {
+//     e.preventDefault();
+//     let id = $(this).data('id');
+//     $.ajax({
+//         url: `/increment/${id}`,
+//         type: "POST",
+//         dataType: "json",
+//         headers: {
+//             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//         },
+//         success: function (data) {
+//             let quantity = $('.quantity[data-id="' + id + '"]');
+//             let newQuantity = parseInt(quantity.text()) + 1;
+//             quantity.text(newQuantity);
+//             // $('.price[data-id="' + id + '"]').text('₱ ' + data.price);
+//         },
+//         error: function (error) {
+//             alert("Error");
+//         },
+//     });
+// });
+
+// $(document).on('click', '.decrement', function (e) {
+//     e.preventDefault();
+//     let id = $(this).data('id');
+//     $.ajax({
+//         url: `/decrement/${id}`,
+//         type: "POST",
+//         dataType: "json",
+//         headers: {
+//             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//         },
+//         success: function (data) {
+//             let quantity = $('.quantity[data-id="' + id + '"]');
+//             let newQuantity = parseInt(quantity.text()) - 1;
+//             quantity.text(newQuantity);
+//             // $('.price[data-id="' + id + '"]').text('₱ ' + data.price);
+//         },
+//         error: function (error) {
+//             alert("Error");
+//         },
+//     });
+// });
