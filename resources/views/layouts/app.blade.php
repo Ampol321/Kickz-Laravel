@@ -108,7 +108,7 @@
                             @endif
                         @else
                             <a class="nav-link" href="{{ url('/shoppingcart/' . Auth::user()->id) }}">Cart <span
-                                    class="badge badge-dark"
+                                    class="badge badge-dark cart-count"
                                     style="background-color:#212121">{{ Auth::user()->cart->count() }}</span></a>
 
                             @if (Auth::user()->role === 'administrator')

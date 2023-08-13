@@ -45,7 +45,7 @@
                 </div>
                 <div class="card-content d-flex flex-column align-items-center">
                     <h4>₱ {{ $product->price }}</h4></br>
-                    {{-- <form method="POST">
+                    <form method="POST">
                         @csrf
                         <input type="hidden" value="1" name="quantity">
                         <div class="d-flex pt-1">
@@ -54,17 +54,16 @@
                             <button class="addtocart btn btn-dark" data-id="{{ $product->id }}" type="button">Add to
                                 Cart</button>
                         </div>
-                    </form> --}}
-                    <form action="{{ url('addcart', $product->id) }}" method="POST">
+                    </form>
+                    {{-- <form action="{{ url('addcart', $product->id) }}" method="POST">
                         @csrf
                         <input type="hidden" value="1" name="quantity">
-                        {{-- <input class="btn btn-dark" type="submit" value="Add to Cart"></br> --}}
                         <div class="d-flex pt-1">
                             <a href="{{ url('/product-detail', $product->id) }}" class="btn btn-success"
                                 style="margin-right:5px"> Details </a>
                             <input class="btn btn-dark" type="submit" value="Add to Cart">
                         </div>
-                    </form>
+                    </form> --}}
                 </div>
             </div>
         @endforeach

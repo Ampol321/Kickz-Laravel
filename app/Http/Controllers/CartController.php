@@ -37,8 +37,8 @@ class CartController extends Controller
                         "price" => $cart->price + $products->price
                     ]);
 
-                return redirect()->back()->with('message', 'Product Added to Cart!');
-                // return response()->json();
+                // return redirect()->back()->with('message', 'Product Added to Cart!');
+                return response()->json(['product_in_cart' => true]);
             } else {
                 $user = auth()->user();
                 $products = product::find($id);
@@ -46,12 +46,12 @@ class CartController extends Controller
 
                 $cart->user_id = $user->id;
                 $cart->product_id = $products->id;
-                $cart->quantity = $request->quantity;
+                $cart->quantity = 1;
                 $cart->price = $products->price;
                 $cart->save();
 
-                return redirect()->back()->with('message', 'Product Added to Cart!');
-                // return response()->json();
+                // return redirect()->back()->with('message', 'Product Added to Cart!');
+                return response()->json(['product_in_cart' => false]);
             }
         } else {
             return redirect('login');

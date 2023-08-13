@@ -20,7 +20,7 @@
 }
 
 #slider figure:hover {
-	/*animation-play-state: paused; enable for pause on hover*/
+
 }
 
 #slider figure img {
