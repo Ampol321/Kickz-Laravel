@@ -67,9 +67,6 @@ Route::middleware(['auth'])->group(function () {
 // Route::get('/restore/{id}', [CartController::class, 'restorecart']);
 // Route::get('/cartbin', [CartController::class, 'deletedcart']);
 
-
-
-
 Auth::routes();
 
 // Route::get('/home', [HomeController::class, 'index'])->name('home');

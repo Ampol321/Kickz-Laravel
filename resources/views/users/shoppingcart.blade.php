@@ -144,5 +144,5 @@
         @endif
     </div>
 
-    <script src="{{ asset('jquery_datatables/shopping-cart.js') }}"></script>
+    <script src="{{ asset('js/shopping-cart.js') }}"></script>
 @endsection
