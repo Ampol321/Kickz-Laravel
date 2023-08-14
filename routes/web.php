@@ -50,10 +50,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile/{id}', [UserController::class, 'userorders']);
     Route::get('/edit-profile/{id}', [UserController::class, 'edit']);
     Route::get('/shoppingcart/{id}', [CartController::class, 'shoppingcart']);
-    Route::get('/increment/{id}', [CartController::class, 'increment']);
-    Route::get('/decrement/{id}', [CartController::class, 'decrement']);
+    Route::post('/increment/{id}', [CartController::class, 'increment']);
+    Route::post('/decrement/{id}', [CartController::class, 'decrement']);
     Route::post('/addcart/{id}', [CartController::class,'addcart']);
-    Route::get('/delete/{id}', [CartController::class, 'deletecart']);
+    Route::delete('/delete/{id}', [CartController::class, 'deletecart']);
     Route::post('/checkout/{id}', [CartController::class,'checkout']);
     Route::get('/cancelorder/{id}', [OrderController::class, 'cancelorder']);
     Route::get('/edit-form/{id}', [OrderController::class, 'editform']);

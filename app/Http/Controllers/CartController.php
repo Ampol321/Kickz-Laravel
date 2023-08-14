@@ -58,6 +58,19 @@ class CartController extends Controller
         }
     }
 
+    public function cartTable($id)
+    {
+        // $user = auth()->user()->id;
+        $cart = DB::table('carts')
+            ->join('users', 'users.id', "=", 'carts.user_id')
+            ->join('products', 'products.id', "=", 'carts.product_id')
+            ->select('carts.*', 'products.product_img', 'products.product_name')
+            ->where('user_id', $id)
+            ->get();
+
+        return response()->json($cart);
+    }
+
     public function shoppingcart($id)
     {
         $totalprice = 0;
@@ -85,7 +98,7 @@ class CartController extends Controller
         // ];
 
         return View::make('users.shoppingcart', compact('cart', 'totalprice', 'shipments', 'payments'));
-        // return response()->json($data);
+        // return response()->json($cart);
     }
 
     public function increment($id)
@@ -101,9 +114,11 @@ class CartController extends Controller
                 "price" => $cart->price + $products->price
             ]);
 
-        return back();
-        // return response()->json(['quantity' => $cart->quantity,
-        // 'price' => $cart->price]);
+        // return back();
+        return response()->json([
+            'quantity' => $cart->quantity,
+            'price' => $cart->price
+        ]);
     }
 
     public function decrement($id)
@@ -121,9 +136,11 @@ class CartController extends Controller
                     "price" => $cart->price - $products->price
                 ]);
         }
-        return back();
-        // return response()->json(['quantity' => $cart->quantity,
-        // 'price' => $cart->price]);
+        // return back();
+        return response()->json([
+            'quantity' => $cart->quantity,
+            'price' => $cart->price
+        ]);
     }
 
     public function checkout(Request $request)
@@ -232,6 +249,7 @@ class CartController extends Controller
         $user = auth()->user()->id;
         cart::where('user_id', $user)
             ->where('product_id', $id)->delete();
-        return redirect()->back()->with('message', 'Cart Item Deleted');
+        // return redirect()->back()->with('message', 'Cart Item Deleted');
+        return response()->json([]);
     }
 }

@@ -1,6 +1,22 @@
 @extends('layouts.tables')
 @extends('layouts.app')
 @section('content')
+    {{-- JQuery DataTables --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js">
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
     <div class="card-body">
         @if (session()->has('message'))
             <div class="alert alert-success">
@@ -14,10 +30,24 @@
                 <h1><b>Shopping Cart</b></h1>
             </center></br>
 
-            <div style="margin: 0 auto; width: 65%;">
+            {{-- <div style="margin: 0 auto; width: 65%;">
                 <div class="rounded" style="width: 1000px; border:2px solid #cecece;">
-                    <div class="table-responsive">
-                        <table class="table">
+                    <div class="table-responsive"> --}}
+            <div class="container" style="width: 1100px; padding:5px; border:2px solid #cecece;">
+                <table id="cartsTable" data-id="{{ Auth::user()->id }}" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table><br>
+                {{-- <table class="table">
                             <thead class="thead-dark">
                                 <tr>
                                     <th></th>
@@ -46,15 +76,16 @@
                                             href="{{ url('delete', $carts->product_id) }}" method="POST">X</a></td>
                                 </tr>
                             @endforeach
-                        </table>
-                        <div class="d-flex justify-content-end">
-                            <h3>Total: ₱{{ $totalprice }} <button type="button" class="btn btn-dark"
-                                    style="margin-bottom: 5px; margin-right: 10px; margin-left: 10px;"
-                                    data-bs-toggle="modal" data-bs-target="#exampleModal">Check Out</button></h3>
-                        </div>
-                    </div>
+                        </table> --}}
+                <div class="d-flex justify-content-end totalprice">
+                    <h3>Total: ₱{{ $totalprice }} <button type="button" class="btn btn-dark"
+                            style="margin-bottom: 5px; margin-right: 10px; margin-left: 10px;" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">Check Out</button></h3>
                 </div>
             </div>
+            {{-- </div>
+                </div>
+            </div> --}}
 
             <!-- Modal -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -64,7 +95,7 @@
                             <h5 class="modal-title" id="exampleModalLabel">Order Information</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form action="/checkout/{{ $carts->user_id }}" method="POST">
+                        <form action="/checkout/{{ Auth::user()->id }}" method="POST">
                             @csrf
                             <div class="modal-body">
                                 <label>Shipping Address:

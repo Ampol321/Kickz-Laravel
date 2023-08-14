@@ -27,7 +27,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 // Route::post('/addcart/{id}', [CartController::class,'addcart']);
-Route::get('/cartTable/{id}', [CartController::class, 'shoppingcart']);
+Route::get('/cartTable/{id}', [CartController::class, 'cartTable']);
 Route::get('/increment/{id}', [CartController::class, 'increment']);
 Route::get('/decrement/{id}', [CartController::class, 'decrement']);
 
