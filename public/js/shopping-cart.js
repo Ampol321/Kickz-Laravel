@@ -35,7 +35,10 @@ let dataTable = $('#cartsTable').DataTable({
         }
     },
     {
-        data: 'price'
+        data: null,
+        render: function (data) {
+            return `<p>₱ ${data.price}</p>`;
+        }
     },
     {
         data: null,
