@@ -154,8 +154,6 @@ $('#create').on('click', function () {
                 $('#typeSelect').append($('<option>').attr("value", value.id).html(value.type_name))
             })
             $('#productForm').trigger('reset')
-
-
         },
         error: function (error) {
             alert("error");
@@ -183,6 +181,7 @@ $('#save').on('click', function () {
             $('#productModal *').prop('disabled', false);
             $('#productForm').trigger('reset')
             $('#productModal').modal('hide')
+            dataTable.ajax.reload();
 
             $('.for-alert').prepend(`
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -273,6 +272,7 @@ $('#update').on('click', function (event) {
             $('#productModal *').prop('disabled', false);
             $('#productModal').trigger("reset");
             $('input[name="document[]"]').remove();
+            dataTable.ajax.reload();
 
             $('.for-alert').prepend(`
             <div class="alert alert-success alert-dismissible fade show" role="alert">

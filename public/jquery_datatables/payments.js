@@ -131,6 +131,7 @@ $('#save').on('click', function () {
             $('#paymentModal *').prop('disabled', false);
             $('#paymentForm').trigger('reset')
             $('#paymentModal').modal('hide')
+            dataTable.ajax.reload();
 
             $('.for-alert').prepend(`
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -197,6 +198,7 @@ $('#update').on('click', function (event) {
             $('#paymentModal *').prop('disabled', false);
             $('#paymentModal').trigger("reset");
             $('input[name="document[]"]').remove();
+            dataTable.ajax.reload();
 
             $('.for-alert').prepend(`
             <div class="alert alert-success alert-dismissible fade show" role="alert">

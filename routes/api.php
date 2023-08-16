@@ -28,8 +28,8 @@ Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 // Route::post('/addcart/{id}', [CartController::class,'addcart']);
 Route::get('/cartTable/{id}', [CartController::class, 'cartTable']);
-Route::get('/increment/{id}', [CartController::class, 'increment']);
-Route::get('/decrement/{id}', [CartController::class, 'decrement']);
+Route::post('/increment/{id}', [CartController::class, 'increment']);
+Route::post('/decrement/{id}', [CartController::class, 'decrement']);
 
 Route::get('/productChart', [ProductController::class, 'indexChart']);
 Route::get('/productTable', [ProductController::class, 'productIndex']);

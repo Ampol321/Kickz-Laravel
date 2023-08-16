@@ -141,6 +141,7 @@ $('#save').on('click', function () {
             $('#shipmentModal *').prop('disabled', false);
             $('#shipmentForm').trigger('reset')
             $('#shipmentModal').modal('hide')
+            dataTable.ajax.reload();
 
             $('.for-alert').prepend(`
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -208,6 +209,7 @@ $('#update').on('click', function (event) {
             $('#shipmentModal *').prop('disabled', false);
             $('#shipmentModal').trigger("reset");
             $('input[name="document[]"]').remove();
+            dataTable.ajax.reload();
 
             $('.for-alert').prepend(`
             <div class="alert alert-success alert-dismissible fade show" role="alert">

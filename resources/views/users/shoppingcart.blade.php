@@ -30,11 +30,8 @@
                 <h1><b>Shopping Cart</b></h1>
             </center></br>
 
-            {{-- <div style="margin: 0 auto; width: 65%;">
-                <div class="rounded" style="width: 1000px; border:2px solid #cecece;">
-                    <div class="table-responsive"> --}}
             <div class="container" style="width: 1100px; padding:5px; border:2px solid #cecece;">
-                <table id="cartsTable" data-id="{{ Auth::user()->id }}" class="table table-striped">
+                <table id="cartsTable" data-id="{{ Auth::user()->id }}">
                     <thead>
                         <tr>
                             <th></th>
@@ -47,47 +44,14 @@
                     <tbody>
                     </tbody>
                 </table><br>
-                {{-- <table class="table">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th></th>
-                                    <th><b>Product Name:</b></th>
-                                    <th><b>Quantity:</b></th>
-                                    <th><b>Price:</b></th>
-                                    <th><b>Action:</b></th>
-                                </tr>
-                            </thead>
-                            @foreach ($cart as $carts)
-                                <tr>
-                                    <td style="vertical-align: middle;"><img src="{{ url($carts->product_img) }}"
-                                            width="100px" height="100px"></td>
-                                    <td style="vertical-align: middle;">{{ $carts->product_name }}</td>
-                                    <td style="vertical-align: middle;">
-                                        <a type="button" class="btn btn-success btn-sm"
-                                            href="{{ url('/increment', $carts->product_id) }}">+</a>
-                                        &nbsp;&nbsp;{{ $carts->quantity }}&nbsp;&nbsp;
-                                        <a type="button" class="btn btn-danger btn-sm"
-                                            href="{{ url('/decrement', $carts->product_id) }}">-</a>
-                                    </td>
-                                    <td style="vertical-align: middle;">₱ {{ $carts->price }}</td>
-                                    @method('DELETE')
-                                    @csrf
-                                    <td style="vertical-align: middle;"><a class="btn btn-danger"
-                                            href="{{ url('delete', $carts->product_id) }}" method="POST">X</a></td>
-                                </tr>
-                            @endforeach
-                        </table> --}}
                 <div class="d-flex justify-content-end totalprice">
-                    <h3>Total: ₱{{ $totalprice }} <button type="button" class="btn btn-dark"
+                    <h3>Total: ₱<span id="totalPrice">{{ $totalprice }}</span> <button type="button" class="btn btn-dark"
                             style="margin-bottom: 5px; margin-right: 10px; margin-left: 10px;" data-bs-toggle="modal"
                             data-bs-target="#exampleModal">Check Out</button></h3>
                 </div>
             </div>
-            {{-- </div>
-                </div>
-            </div> --}}
 
-            <!-- Modal -->
+            <!-- Modal for transaction -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -174,6 +138,45 @@
             <h1 style="text-align: center;  padding:20%;">No Products in Cart</h1>
         @endif
     </div>
+    
+    <script src="{{ asset('js/shopping-cart.js') }}">
+        var cartCount = {{ $cart->count() }};
+    </script>
 
-    <script src="{{ asset('js/shopping-cart.js') }}"></script>
+    {{-- <div style="margin: 0 auto; width: 65%;">
+        <div class="rounded" style="width: 1000px; border:2px solid #cecece;">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th></th>
+                            <th><b>Product Name:</b></th>
+                            <th><b>Quantity:</b></th>
+                            <th><b>Price:</b></th>
+                            <th><b>Action:</b></th>
+                        </tr>
+                    </thead>
+                    @foreach ($cart as $carts)
+                        <tr>
+                            <td style="vertical-align: middle;"><img src="{{ url($carts->product_img) }}" width="100px"
+                                    height="100px"></td>
+                            <td style="vertical-align: middle;">{{ $carts->product_name }}</td>
+                            <td style="vertical-align: middle;">
+                                <a type="button" class="btn btn-success btn-sm"
+                                    href="{{ url('/increment', $carts->product_id) }}">+</a>
+                                &nbsp;&nbsp;{{ $carts->quantity }}&nbsp;&nbsp;
+                                <a type="button" class="btn btn-danger btn-sm"
+                                    href="{{ url('/decrement', $carts->product_id) }}">-</a>
+                            </td>
+                            <td style="vertical-align: middle;">₱ {{ $carts->price }}</td>
+                            @method('DELETE')
+                            @csrf
+                            <td style="vertical-align: middle;"><a class="btn btn-danger"
+                                    href="{{ url('delete', $carts->product_id) }}" method="POST">X</a></td>
+                        </tr>
+                    @endforeach
+                </table>
+            </div>
+        </div>
+    </div> --}}
 @endsection

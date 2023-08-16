@@ -14,40 +14,40 @@ let dataTable = $('#cartsTable').DataTable({
     //     'pdfHtml5'
     // ],
     columns: [
-    {
-        data: null,
-        render: function (data) {
-            return `<img src="${data.product_img}" width="100" height="100" />`;
-        }
-    },
-    {
-        data: 'product_name'
-    },
-    {
-        // data: null,
-        data: null,
-        render: function (data) {
-            return `<button class="btn btn-success btn-sm increment"
-            data-id="${ data.product_id }">+</button>
-            &nbsp;&nbsp;${ data.quantity }&nbsp;&nbsp;
+        {
+            data: null,
+            render: function (data) {
+                return `<img src="${data.product_img}" width="100" height="100" />`;
+            }
+        },
+        {
+            data: 'product_name'
+        },
+        {
+            // data: null,
+            data: null,
+            render: function (data) {
+                return `<button class="btn btn-success btn-sm increment"
+            data-id="${data.product_id}">+</button>
+            &nbsp;&nbsp;${data.quantity}&nbsp;&nbsp;
             <button class="btn btn-danger btn-sm decrement"
-            data-id="${ data.product_id }">-</button>`;
-        }
-    },
-    {
-        data: null,
-        render: function (data) {
-            return `<p>₱ ${data.price}</p>`;
-        }
-    },
-    {
-        data: null,
-        render: function (data) {
-            return `<button type="button" data-id="${data.product_id}" class="btn btn-danger btn-delete delete">
+            data-id="${data.product_id}">-</button>`;
+            }
+        },
+        {
+            data: null,
+            render: function (data) {
+                return `<p>₱ ${data.price}</p>`;
+            }
+        },
+        {
+            data: null,
+            render: function (data) {
+                return `<button type="button" data-id="${data.product_id}" class="btn btn-danger btn-delete delete">
                     <i class="fas fa-trash" style="color:white"></i>
                 </button>`;
+            }
         }
-    }
     ]
 });
 
@@ -95,7 +95,23 @@ $(document).on('click', '.increment', function (e) {
             let quantity = $('.quantity[data-id="' + id + '"]');
             let newQuantity = parseInt(quantity.text()) + 1;
             quantity.text(newQuantity);
-            $('.price[data-id="' + id + '"]').text('₱ ' + data.price);
+
+            let price = $('.price[data-id="' + id + '"]');
+            price.text('₱ ' + data.price);
+
+            // let totalPriceElement = $('#totalPrice');
+            // let totalPrice = parseFloat(totalPriceElement.text());
+            // totalPrice += parseFloat(data.price);
+            // totalPriceElement.text(totalPrice.toFixed(2));
+
+            // let price = $('.price[data-id="' + id + '"]');
+            // let newPrice = parseFloat(data.price.text());
+            // price.text('₱ ' + newPrice);
+            // $('.price[data-id="' + id + '"]').text('₱ ' + data.price);
+
+            // let totalPrice = parseFloat($('#totalPrice').text());
+            // totalPrice = parseFloat(data.totalprice);
+            // $('#totalPrice').text(totalPrice.toFixed(2));
         },
         error: function (error) {
             alert("Error");
@@ -118,7 +134,18 @@ $(document).on('click', '.decrement', function (e) {
             let quantity = $('.quantity[data-id="' + id + '"]');
             let newQuantity = parseInt(quantity.text()) - 1;
             quantity.text(newQuantity);
-            $('.price[data-id="' + id + '"]').text('₱ ' + data.price);
+
+            let price = $('.price[data-id="' + id + '"]');
+            price.text('₱ ' + data.price);
+
+            // let price = $('.price[data-id="' + id + '"]');
+            // let newPrice = parseFloat(data.price.text());
+            // price.text('₱ ' + newPrice);
+            // $('.price[data-id="' + id + '"]').text('₱ ' + data.price);
+
+            // let totalPrice = parseFloat($('#totalPrice').text());
+            // totalPrice -= parseFloat(data.price);
+            // $('#totalPrice').text(totalPrice.toFixed(2));
         },
         error: function (error) {
             alert("Error");
@@ -147,11 +174,23 @@ $(document).on('click', 'button.delete', function () {
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                        </div>
-                    `);
+                        </div>`);
+
                         $('.alert').fadeOut(5000, function () {
                             $(this).remove();
                         });
+
+                        // let totalPrice = parseFloat($('#totalPrice').text());
+                        // totalPrice -= parseFloat(data.product_price);
+                        // $('#totalPrice').text(totalPrice.toFixed(2));
+
+                        let product = data.product_in_cart;
+                        if (!product) {
+                            let cartCount = $('.cart-count');
+                            let newCartCount = parseInt(cartCount.text()) - 1;
+                            cartCount.text(newCartCount);
+                        }
+
                         // $(`td:contains(${id})`).closest('tr').fadeOut(5000, function () {
                         //     $(this).remove();
                         // });

@@ -133,6 +133,7 @@ $('#save').on('click', function () {
             $('#brandModal *').prop('disabled', false);
             $('#brandForm').trigger('reset')
             $('#brandModal').modal('hide')
+            dataTable.ajax.reload();
 
             $('.for-alert').prepend(`
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -199,6 +200,7 @@ $('#update').on('click', function (event) {
             $('#brandModal *').prop('disabled', false);
             $('#brandModal').trigger("reset");
             $('input[name="document[]"]').remove();
+            dataTable.ajax.reload();
 
             $('.for-alert').prepend(`
             <div class="alert alert-success alert-dismissible fade show" role="alert">

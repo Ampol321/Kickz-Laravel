@@ -34,12 +34,12 @@ class ProductController extends Controller
 
     public function index(ProductsDataTable $dataTable)
     {
-        $products = DB::table('orderitems')
-            ->orderBy('totalqty', 'DESC')
-            ->join('products', 'products.id', "=", 'orderitems.product_id')
-            ->groupBy('products.product_name')
-            ->pluck(DB::raw('sum(orderitems.quantity) as totalqty'), 'products.product_name')
-            ->all();
+        // $products = DB::table('orderitems')
+        //     ->orderBy('totalqty', 'DESC')
+        //     ->join('products', 'products.id', "=", 'orderitems.product_id')
+        //     ->groupBy('products.product_name')
+        //     ->pluck(DB::raw('sum(orderitems.quantity) as totalqty'), 'products.product_name')
+        //     ->all();
 
         // $productChart = new ProductChart();
         // $dataset = $productChart->labels(array_keys($products));
@@ -103,7 +103,7 @@ class ProductController extends Controller
         //     }}',
         // ]);
 
-        return $dataTable->render('products.index', compact('products'));
+        return $dataTable->render('products.index');
     }
 
     public function productIndex()

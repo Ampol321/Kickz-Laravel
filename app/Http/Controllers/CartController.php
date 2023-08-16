@@ -79,7 +79,7 @@ class CartController extends Controller
         $cart = DB::table('carts')
             ->join('users', 'users.id', "=", 'carts.user_id')
             ->join('products', 'products.id', "=", 'carts.product_id')
-            ->select('carts.*', 'products.product_img', 'products.product_name')
+            ->select('carts.*', 'products.product_img', 'products.product_name', 'products.price AS product_price')
             ->where('user_id', $id)
             ->get();
         // $cart = Cart::with(['user','product'])
