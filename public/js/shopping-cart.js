@@ -153,6 +153,10 @@ $(document).on('click', 'button.delete', function () {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function (data) {
+
+                        let totalPriceSpan = $('.totalPrice');
+                        totalPriceSpan.text(data.totalPrice.toFixed(2));
+
                         $('.for-alert').prepend(`
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             Cart Item Successfully Deleted!
@@ -165,10 +169,6 @@ $(document).on('click', 'button.delete', function () {
                             $(this).remove();
                         });
 
-                        // let totalPrice = parseFloat($('#totalPrice').text());
-                        // totalPrice -= parseFloat(data.product_price);
-                        // $('#totalPrice').text(totalPrice.toFixed(2));
-
                         let product = data.product_in_cart;
                         if (!product) {
                             let cartCount = $('.cart-count');
@@ -176,9 +176,6 @@ $(document).on('click', 'button.delete', function () {
                             cartCount.text(newCartCount);
                         }
 
-                        // $(`td:contains(${id})`).closest('tr').fadeOut(5000, function () {
-                        //     $(this).remove();
-                        // });
                         dataTable.ajax.reload();
                     },
                     error: function () {

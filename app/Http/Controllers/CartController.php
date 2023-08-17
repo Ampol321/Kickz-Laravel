@@ -253,7 +253,9 @@ class CartController extends Controller
         $user = auth()->user()->id;
         cart::where('user_id', $user)
             ->where('product_id', $id)->delete();
+
+        $totalPrice = cart::where('user_id', $user)->sum('price');
         // return redirect()->back()->with('message', 'Cart Item Deleted');
-        return response()->json([]);
+        return response()->json(['totalPrice'=>$totalPrice]);
     }
 }
