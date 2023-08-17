@@ -60,11 +60,10 @@ class CartController extends Controller
 
     public function cartTable($id)
     {
-        // $user = auth()->user()->id;
         $cart = DB::table('carts')
             ->join('users', 'users.id', "=", 'carts.user_id')
             ->join('products', 'products.id', "=", 'carts.product_id')
-            ->select('carts.*', 'products.product_img', 'products.product_name')
+            ->select('carts.*', 'products.product_img', 'products.product_name', 'products.price AS product_price')
             ->where('user_id', $id)
             ->get();
 
@@ -114,10 +113,12 @@ class CartController extends Controller
                 "price" => $cart->price + $products->price
             ]);
 
+        $totalPrice = cart::where('user_id', $user)->sum('price');
         // return back();
         return response()->json([
             'quantity' => $cart->quantity,
-            'price' => $cart->price
+            'price' => $cart->price,
+            'totalprice' => $totalPrice,
         ]);
     }
 

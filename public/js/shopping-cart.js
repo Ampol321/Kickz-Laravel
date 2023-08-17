@@ -72,7 +72,7 @@ document.getElementById("mySelect").addEventListener("change", function () {
         document.getElementById("otherOption").style.display = "none";
         document.getElementById("otherInput").required = false;
         document.getElementById("otherInput").name = null;
-        document.getElementById("otherInput").value = "x";
+        document.getElementById("otherInput").placeholder = "####-####-####-####";
     }
 });
 
@@ -99,19 +99,13 @@ $(document).on('click', '.increment', function (e) {
             let price = $('.price[data-id="' + id + '"]');
             price.text('₱ ' + data.price);
 
-            // let totalPriceElement = $('#totalPrice');
-            // let totalPrice = parseFloat(totalPriceElement.text());
-            // totalPrice += parseFloat(data.price);
-            // totalPriceElement.text(totalPrice.toFixed(2));
+            let total = 0;
+            $('.price').each(function () {
+                let priceValue = $(this).text().replace('₱ ', '');
+                total += parseFloat(priceValue);
+            });
 
-            // let price = $('.price[data-id="' + id + '"]');
-            // let newPrice = parseFloat(data.price.text());
-            // price.text('₱ ' + newPrice);
-            // $('.price[data-id="' + id + '"]').text('₱ ' + data.price);
-
-            // let totalPrice = parseFloat($('#totalPrice').text());
-            // totalPrice = parseFloat(data.totalprice);
-            // $('#totalPrice').text(totalPrice.toFixed(2));
+            $('.totalPrice').text(total.toFixed(2));
         },
         error: function (error) {
             alert("Error");
@@ -138,14 +132,6 @@ $(document).on('click', '.decrement', function (e) {
             let price = $('.price[data-id="' + id + '"]');
             price.text('₱ ' + data.price);
 
-            // let price = $('.price[data-id="' + id + '"]');
-            // let newPrice = parseFloat(data.price.text());
-            // price.text('₱ ' + newPrice);
-            // $('.price[data-id="' + id + '"]').text('₱ ' + data.price);
-
-            // let totalPrice = parseFloat($('#totalPrice').text());
-            // totalPrice -= parseFloat(data.price);
-            // $('#totalPrice').text(totalPrice.toFixed(2));
         },
         error: function (error) {
             alert("Error");

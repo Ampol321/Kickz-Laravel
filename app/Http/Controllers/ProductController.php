@@ -229,7 +229,6 @@ class ProductController extends Controller
             ->join('brands', 'brands.id', '=', 'products.brand_id')
             ->join('types', 'types.id', '=', 'products.type_id')
             ->join('stocks', 'stocks.product_id', '=', 'products.id')
-            //->select('products.*', 'brands.brand_name', 'types.type_name')
             ->where('products.id', $id)
             ->first();
         // $products = Product::with(['brand', 'type'])->findOrFail($id);

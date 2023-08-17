@@ -49,7 +49,7 @@
                         @csrf
                         <input type="hidden" value="1" name="quantity">
                         <div class="d-flex pt-1">
-                            <a href="{{ url('/product-detail', $product->id) }}" class="btn btn-outline-secondary"
+                            <a href="{{ url('/product-detail', $product->id) }}" class="btn btn-primary"
                                 style="margin-right:5px"> Details </a>
                             <button class="addtocart btn btn-dark" data-id="{{ $product->id }}" type="button">Add to
                                 Cart</button>

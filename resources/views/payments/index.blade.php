@@ -63,7 +63,7 @@
                     <div class="col-md-8" style="padding:5px; border:2px solid #cecece;">
                         {{-- {{ $dataTable->table() }}
                         {{ $dataTable->scripts() }} --}}
-                        <table id="paymentsTable" class="table table-striped">
+                        <table id="paymentsTable" class="table table-hover">
                             <thead>
                                 <tr>
                                     <th>Payment ID</th>

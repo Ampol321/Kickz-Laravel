@@ -43,8 +43,8 @@
         </form>
     </div><br>
 
-    <div style="margin: 0 auto; width: 65%;">
-        <table class="table">
+    <div style="margin: 0 auto; width: 65%; padding:5px; border:2px solid #cecece;">
+        <table class="table table-hover">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">Order ID</th>

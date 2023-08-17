@@ -31,10 +31,10 @@
             </center></br>
 
             <div class="container" style="width: 1100px; padding:5px; border:2px solid #cecece;">
-                <table id="cartsTable" data-id="{{ Auth::user()->id }}">
+                <table id="cartsTable" data-id="{{ Auth::user()->id }}" class="table table-hover">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th>Image</th>
                             <th>Product Name</th>
                             <th>Quantity</th>
                             <th>Price</th>
@@ -45,9 +45,9 @@
                     </tbody>
                 </table><br>
                 <div class="d-flex justify-content-end totalprice">
-                    <h3>Total: ₱<span id="totalPrice">{{ $totalprice }}</span> <button type="button" class="btn btn-dark"
-                            style="margin-bottom: 5px; margin-right: 10px; margin-left: 10px;" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">Check Out</button></h3>
+                    <h3>Total: ₱<span class="totalPrice">{{ $totalprice }}</span> <button type="button"
+                            class="btn btn-dark" style="margin-bottom: 5px; margin-right: 10px; margin-left: 10px;"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal">Check Out</button></h3>
                 </div>
             </div>
 
@@ -138,9 +138,10 @@
             <h1 style="text-align: center;  padding:20%;">No Products in Cart</h1>
         @endif
     </div>
-    
+
     <script src="{{ asset('js/shopping-cart.js') }}">
         var cartCount = {{ $cart->count() }};
+        var total = {{ $totalprice }}
     </script>
 
     {{-- <div style="margin: 0 auto; width: 65%;">

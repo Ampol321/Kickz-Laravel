@@ -10,11 +10,7 @@
     <div class="container">
         <div class="row gx-4 gx-lg-5 align-items-center">
             <div class="col-md-6">
-                {{-- <div class="card p-0" style="display:inline-block; height:600px; width: 600px">
-                    <div class="card-image"> --}}
-                        <img src="{{ url($products->product_img) }}" style="height:600px;width:600px" />
-                    {{-- </div>
-                </div> --}}
+                <img src="{{ url($products->product_img) }}" style="height:600px;width:600px" />
             </div>
             <div class="col-md-6">
                 <h1 class="display-5 fw-bolder">{{ $products->product_name }}</h1>
@@ -36,16 +32,15 @@
                         complement any outfit, reflecting your unique personality and taste.</p>
                 @endif
                 <div class="d-flex">
-                    <form action="{{ url('addcart', $products->id) }}" method="POST">
+                    <form method="POST">
                         @csrf
                         <input type="hidden" value="1" name="quantity">
-                        <button class="btn btn-outline-dark flex-shrink-0" type="submit">
-                            <i class="bi-cart-fill me-1"></i>
-                            Add to cart
-                        </button>
+                        <button class="addtocart btn btn-outline-dark flex-shrink-0" data-id="{{ $products->id }}"
+                            type="button"><i class="bi-cart-fill me-1"></i>Add to Cart</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    <script src="{{ asset('js/home.js') }}"></script>
 @endsection
