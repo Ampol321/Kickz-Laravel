@@ -17,37 +17,38 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 
+    @if (session()->has('message'))
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert" style="display:inline-block">x</button>
+            {{ session()->get('message') }}
+        </div>
+    @endif
+
     <div class="card-body">
-        @if (session()->has('message'))
-            <div class="alert alert-success">
-                <button type="button" class="close" data-dismiss="alert" style="display:inline-block">x</button>
-                {{ session()->get('message') }}
-            </div>
-        @endif
-
         @if ($cart->count())
-            <center>
-                <h1><b>Shopping Cart</b></h1>
-            </center></br>
-
-            <div class="container" style="width: 1100px; padding:5px; border:2px solid #cecece;">
-                <table id="cartsTable" data-id="{{ Auth::user()->id }}" class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>Product Name</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table><br>
-                <div class="d-flex justify-content-end totalprice">
-                    <h3>Total: ₱<span class="totalPrice">{{ $totalprice }}</span> <button type="button"
-                            class="btn btn-dark" style="margin-bottom: 5px; margin-right: 10px; margin-left: 10px;"
-                            data-bs-toggle="modal" data-bs-target="#exampleModal">Check Out</button></h3>
+            <div class="cart">
+                <center>
+                    <h1><b>Shopping Cart</b></h1>
+                </center><br>
+                <div class="cartContainer" style="margin: 0 auto; width: 1100px; padding:5px; border:2px solid #cecece;">
+                    <table id="cartsTable" data-id="{{ Auth::user()->id }}" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Product Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table><br>
+                    <div class="d-flex justify-content-end totalprice">
+                        <h3>Total: ₱<span class="totalPrice">{{ $totalprice }}</span> <button type="button"
+                                class="btn btn-dark" style="margin-bottom: 5px; margin-right: 10px; margin-left: 10px;"
+                                data-bs-toggle="modal" data-bs-target="#exampleModal">Check Out</button></h3>
+                    </div>
                 </div>
             </div>
 
@@ -135,7 +136,7 @@
                 </div>
             </div>
         @else
-            <h1 style="text-align: center;  padding:20%;">No Products in Cart</h1>
+            <h1 class="message" style="text-align: center;  padding:20%;">No Products in Cart</h1>
         @endif
     </div>
 

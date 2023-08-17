@@ -176,6 +176,13 @@ $(document).on('click', 'button.delete', function () {
                             cartCount.text(newCartCount);
                         }
 
+                        let Count = parseInt($('.cart-count').text());
+                        if (Count === 0) {
+                            $('.cart').hide(function () {
+                                $(this).empty().append('<h1 style="text-align: center; padding:20%;">No Products in Cart</h1>').fadeIn(1000);
+                            });
+                        }
+
                         dataTable.ajax.reload();
                     },
                     error: function () {
