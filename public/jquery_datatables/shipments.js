@@ -156,7 +156,7 @@ $('#save').on('click', function () {
             });
         },
         error: function (error) {
-            // alert("error");
+            alert("error");
         },
     })
 })
@@ -268,6 +268,7 @@ $(document).on('click', 'button.delete', function () {
             },
 
             cancel: function () {
+                
             },
         }
     });

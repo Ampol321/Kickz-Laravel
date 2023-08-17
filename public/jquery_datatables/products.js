@@ -106,13 +106,6 @@ let dataTable = $('#productsTable').DataTable({
     {
         data: 'stock.stock'
     },
-    // {
-    //     data: null,
-    //     render: function (data) {
-    //         let createdDate = new Date(data.created_at);
-    //         return createdDate.toLocaleDateString("en-US");
-    //     }
-    // },
     {
         data: null,
         render: function (data) {
@@ -196,8 +189,7 @@ $('#save').on('click', function () {
             });
         },
         error: function (error) {
-            // alert("error");
-            // $('#productModal *').prop('disabled', false);
+            alert("error");
         },
     })
 })
@@ -291,7 +283,6 @@ $('#update').on('click', function (event) {
         error: function (error) {
             console.log(error.responseJSON.errors);
             alert("error");
-            $('#productModal *').prop('disabled', false);
         }
     })
 })

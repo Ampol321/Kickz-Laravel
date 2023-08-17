@@ -148,7 +148,7 @@ $('#save').on('click', function () {
             });
         },
         error: function (error) {
-            // alert("error");
+            alert("error");
         },
     })
 })
@@ -217,7 +217,6 @@ $('#update').on('click', function (event) {
         error: function (error) {
             console.log(error.responseJSON.errors);
             alert("error");
-            $('#brandModal *').prop('disabled', false);
         }
     })
 })
