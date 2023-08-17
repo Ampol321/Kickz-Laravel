@@ -118,7 +118,7 @@ class CartController extends Controller
         return response()->json([
             'quantity' => $cart->quantity,
             'price' => $cart->price,
-            'totalprice' => $totalPrice,
+            'totalPrice' => $totalPrice,
         ]);
     }
 
@@ -137,10 +137,13 @@ class CartController extends Controller
                     "price" => $cart->price - $products->price
                 ]);
         }
+
+        $totalPrice = cart::where('user_id', $user)->sum('price');
         // return back();
         return response()->json([
             'quantity' => $cart->quantity,
-            'price' => $cart->price
+            'price' => $cart->price,
+            'totalPrice' => $totalPrice,
         ]);
     }
 

@@ -91,6 +91,7 @@ $(document).on('click', '.increment', function (e) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function (data) {
+            console.log(data)
             dataTable.ajax.reload()
             let quantity = $('.quantity[data-id="' + id + '"]');
             let newQuantity = parseInt(quantity.text()) + 1;
@@ -99,13 +100,8 @@ $(document).on('click', '.increment', function (e) {
             let price = $('.price[data-id="' + id + '"]');
             price.text('₱ ' + data.price);
 
-            let total = 0;
-            $('.price').each(function () {
-                let priceValue = $(this).text().replace('₱ ', '');
-                total += parseFloat(priceValue);
-            });
-
-            $('.totalPrice').text(total.toFixed(2));
+            let totalPriceSpan = $('.totalPrice');
+            totalPriceSpan.text(data.totalPrice.toFixed(2));
         },
         error: function (error) {
             alert("Error");
@@ -124,6 +120,7 @@ $(document).on('click', '.decrement', function (e) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function (data) {
+            console.log(data)
             dataTable.ajax.reload()
             let quantity = $('.quantity[data-id="' + id + '"]');
             let newQuantity = parseInt(quantity.text()) - 1;
@@ -132,6 +129,8 @@ $(document).on('click', '.decrement', function (e) {
             let price = $('.price[data-id="' + id + '"]');
             price.text('₱ ' + data.price);
 
+            let totalPriceSpan = $('.totalPrice');
+            totalPriceSpan.text(data.totalPrice.toFixed(2));
         },
         error: function (error) {
             alert("Error");
