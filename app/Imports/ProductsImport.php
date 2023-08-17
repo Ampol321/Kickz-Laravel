@@ -2,9 +2,10 @@
 
 namespace App\Imports;
 
-use App\Models\Product;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use App\Models\Product;
+use App\Models\Stock;
 
 class ProductsImport implements ToModel,WithHeadingRow
 {
@@ -15,8 +16,25 @@ class ProductsImport implements ToModel,WithHeadingRow
     */
     public function model(array $row)
     {
-        return new Product(['product_img'  => $row['images'],'product_name' => $row['product_name'],
-        'colorway' => $row['colorway'],'size' => $row['size'],'price' => $row['price'],
-        'brand_id' => $row['brand_id'],'type_id' => $row['type_id']]);
+        $product = new Product([
+            'product_img' => $row['images'],
+            'product_name' => $row['product_name'],
+            'colorway' => $row['colorway'],
+            'size' => $row['size'],
+            'price' => $row['price'],
+            'brand_id' => $row['brand_id'],
+            'type_id' => $row['type_id']
+        ]);
+    
+        $product->save();
+    
+        $stock = new Stock([
+            'product_id' => $product->id,
+            'quantity' => 0 
+        ]);
+        
+        $stock->save();
+    
+        return $product;
     }
 }
